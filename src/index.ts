@@ -1,6 +1,6 @@
 import Telegraf, { Markup, ContextMessageUpdate } from 'telegraf';
-import ngrok from 'ngrok';
-import crypto from 'crypto';
+import * as ngrok from 'ngrok';
+import * as crypto from 'crypto';
 
 import { app } from './config';
 import { logger } from './modules';
@@ -21,6 +21,8 @@ bot.on('text', (ctx: ContextMessageUpdate): void => {
 })
 
 const launch = async (): Promise<void> => {
+  logger.info('release -', app.release);
+  
   if (app.isWebhookDisabled) {
     await bot.telegram.deleteWebhook();
     bot.startPolling();
@@ -34,8 +36,7 @@ const launch = async (): Promise<void> => {
 
     const hookPath = `/bots/telegram/${crypto.randomBytes(32).toString('hex')}`;
 
-    // bot.startWebhook(hookPath, null, app.webhookPort, host);
-    bot.launch({
+    await bot.launch({
       webhook: {
         domain: host,
         hookPath,
