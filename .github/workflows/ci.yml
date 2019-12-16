@@ -16,12 +16,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install dependencies
-      run: npm ci
-      env:
-        CI: true
-    - name: Lint
-      run: npm run eslint
+    - uses: stefanoeb/eslint-action@1.0.0
+      with:
+        args: './src/**/*.{ts}'
 
 
 
