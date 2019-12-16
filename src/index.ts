@@ -1,4 +1,4 @@
-import Telegraf, { Markup, ContextMessageUpdate } from 'telegraf';
+import Telegraf, { ContextMessageUpdate } from 'telegraf';
 import * as ngrok from 'ngrok';
 import * as crypto from 'crypto';
 
@@ -18,11 +18,11 @@ bot.start((ctx: ContextMessageUpdate): void => {
 bot.on('text', (ctx: ContextMessageUpdate): void => {
   const message = ctx.update.message ? ctx.update.message.text : '';
   ctx.reply(`${new Date().toLocaleString()} - ${message}`);
-})
+});
 
 const launch = async (): Promise<void> => {
   logger.info('release -', app.release);
-  
+
   if (app.isWebhookDisabled) {
     await bot.telegram.deleteWebhook();
     bot.startPolling();
