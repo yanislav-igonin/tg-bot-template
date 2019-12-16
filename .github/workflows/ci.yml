@@ -18,7 +18,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - uses: stefanoeb/eslint-action@1.0.0
       with:
-        args: './src/**/*.{ts}'
+        args: './src/**/*.ts'
 
 
 
