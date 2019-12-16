@@ -10,8 +10,8 @@ interface Loggers {
 }
 
 const loggers: Loggers = {
-  development: pino({ timestamp: false, level: 'debug', prettyPrint: true }),
-  production: pino({ level: 'error', prettyPrint: true }),
+  development: pino({ level: 'debug', prettyPrint: true }),
+  production: pino({ level: 'info', prettyPrint: true }),
 };
 
 const logger: PinoLogger = loggers[app.env];
