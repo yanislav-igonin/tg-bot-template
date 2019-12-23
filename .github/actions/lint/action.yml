@@ -4,6 +4,8 @@ on: [push, release]
 
 jobs:
   lint:
+    runs-on: ubuntu-latest
+    
     steps:
     - name: Use Node.js 12
       uses: actions/setup-node@v1
