@@ -4,6 +4,10 @@ on: [push, release]
 
 jobs:
   lint:
+    strategy:
+      matrix:
+        node-version: [12.x]
+
     steps:
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
