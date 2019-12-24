@@ -1,9 +1,9 @@
-name: Push
-
-on: push
+name: CI
 
 jobs:
   lint:
+    on: push
+
     runs-on: ubuntu-latest
 
     steps:
@@ -19,6 +19,8 @@ jobs:
 
   build:
     needs: lint
+    
+    on: push
 
     runs-on: ubuntu-latest
 
