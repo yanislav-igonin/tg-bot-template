@@ -1,9 +1,9 @@
 name: Push
 
+on: push
 
 jobs:
   lint:
-    on: push
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +18,6 @@ jobs:
       run: npm run eslint
 
   build:
-    on: push
     needs: lint
 
     runs-on: ubuntu-latest
