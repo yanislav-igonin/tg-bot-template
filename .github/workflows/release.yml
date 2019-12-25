@@ -1,0 +1,17 @@
+name: Release
+
+on: release
+
+# build artifacts
+# store artifacts https://help.github.com/en/actions/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts
+# build docker image with this artifacts
+# push docker image with tag
+# deploy docker image with ssh command
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Kek
+    - run: echo "Kek"
