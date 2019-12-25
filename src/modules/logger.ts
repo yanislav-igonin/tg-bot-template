@@ -1,19 +1,20 @@
-import pino, { Logger as PinoLogger } from 'pino';
+import pino, { Logger } from 'pino';
 
 import { app } from '../config';
 
-interface Loggers {
-  development: PinoLogger;
-  production: PinoLogger;
+const createLogger = (): Logger => {
+  const logLevel = (): string => {
+    if (app.env === 'development') return 'debug';
 
-  [key: string]: PinoLogger;
-}
+    return 'error';
+  };
 
-const loggers: Loggers = {
-  development: pino({ level: 'debug', prettyPrint: true }),
-  production: pino({ level: 'info', prettyPrint: true }),
+  return pino({
+    level: logLevel(),
+    prettyPrint: true,
+  });
 };
 
-const logger: PinoLogger = loggers[app.env];
+const logger = createLogger();
 
 export default logger;
