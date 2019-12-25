@@ -47,7 +47,7 @@ jobs:
     - name: Echo
       run: echo "Release"
 
-  deployt:
+  deploy:
     needs: release
 
     runs-on: ubuntu-latest
