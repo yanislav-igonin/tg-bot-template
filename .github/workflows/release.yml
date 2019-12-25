@@ -4,14 +4,12 @@ on: release
 
 # build artifacts
 # store artifacts https://help.github.com/en/actions/automating-your-workflow-with-github-actions/persisting-workflow-data-using-artifacts
-# build docker image with this artifacts (GITHUB_REF - Tag of release)
-# push docker image with tag (GITHUB_REF - Tag of release)
+# build docker image with this artifacts
+# push docker image with tag
 # deploy docker image with ssh command
 
 jobs:
   release:
-    needs: build
-
     runs-on: ubuntu-latest
 
     steps:
