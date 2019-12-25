@@ -1,4 +1,4 @@
-name: Push
+name: Release
 
 on: push
 
@@ -53,5 +53,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Echo
-      run: echo "Release"
+    - name: Deploy
+      run: echo "Deploy"
