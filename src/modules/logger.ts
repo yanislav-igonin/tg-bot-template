@@ -6,7 +6,7 @@ const createLogger = (): Logger => {
   const logLevel = (): string => {
     if (app.env === 'development') return 'debug';
 
-    return 'error';
+    return 'info';
   };
 
   return pino({
