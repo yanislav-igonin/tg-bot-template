@@ -63,7 +63,7 @@ deploy:
   image: ubuntu:latest
   stage: deploy
   variables:
-    CONTAINER_NAME: face_fucker_bot_app
+    CONTAINER_NAME: some_app
   tags:
     - docker
   before_script:
