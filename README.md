@@ -24,7 +24,8 @@ OR
 
 ## Bugs :bug:
 
-This project is getting upgrades in my free time if there is a problem please create a bug report in the issues section.
+This project is getting upgrades in my free time.
+If there is a problem please create a bug report in the issues section.
 
 ## License :scroll:
 
