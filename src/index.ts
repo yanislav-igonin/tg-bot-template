@@ -1,6 +1,5 @@
 import Telegraf from 'telegraf';
 import * as ngrok from 'ngrok';
-import * as crypto from 'crypto';
 
 import { app } from './config';
 import { logger } from './modules';
@@ -29,12 +28,10 @@ const launch = async (): Promise<void> => {
       host = app.webhookHost;
     }
 
-    const hookPath = `/bots/telegram/${crypto.randomBytes(32).toString('hex')}`;
-
     await bot.launch({
       webhook: {
         domain: host,
-        hookPath,
+        hookPath: app.webhookPath,
         port: app.webhookPort,
       },
     });
