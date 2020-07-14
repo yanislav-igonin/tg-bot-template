@@ -1,6 +1,6 @@
-import { ContextMessageUpdate } from 'telegraf';
+import { Context } from 'telegraf';
 
-export default async (ctx: ContextMessageUpdate): Promise<void> => {
+export default async (ctx: Context): Promise<void> => {
   const message = ctx.update.message ? ctx.update.message.text : 'text';
   ctx.reply(`${new Date().toLocaleString()} - ${message}`);
 };
