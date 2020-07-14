@@ -10,6 +10,6 @@ services:
       - WEBHOOK_HOST=${WEBHOOK_HOST}
       - WEBHOOK_PORT=${WEBHOOK_PORT}
       - WEBHOOK_PATH=${WEBHOOK_PATH}
-      - IS_WEBHOOK_DISABLED=false
+      - IS_WEBHOOK_ENABLED=false
     volumes:
       - ./src:/app/src
