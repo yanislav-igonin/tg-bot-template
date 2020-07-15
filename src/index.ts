@@ -3,7 +3,7 @@ import * as ngrok from 'ngrok';
 
 import { app, telegram } from './config';
 import { logger } from './modules';
-import { start, text } from './controllers';
+import { StartController, TextController } from './controllers';
 
 const bot = new Telegraf(telegram.token);
 
@@ -11,8 +11,8 @@ bot.catch((err: Error): void => {
   logger.error(`ERROR: ${err}\n`);
 });
 
-bot.start(start);
-bot.on('text', text);
+bot.start(StartController);
+bot.on('text', TextController);
 
 const launch = async (): Promise<void> => {
   logger.info('release -', app.release);

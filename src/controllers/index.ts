@@ -1,7 +1,7 @@
-import start from './start';
-import text from './text';
+import { StartController } from './start.controller';
+import { TextController } from './text.controller';
 
 export {
-  start,
-  text,
+  StartController,
+  TextController,
 };
