@@ -1,10 +1,10 @@
 import pino, { Logger } from 'pino';
 
-import { app } from '../config';
+import { AppConfig } from '../config';
 
 const createLogger = (): Logger => {
   const logLevel = (): string => {
-    if (app.env === 'development') return 'debug';
+    if (AppConfig.env === 'development') return 'debug';
 
     return 'info';
   };

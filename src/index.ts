@@ -1,11 +1,11 @@
 import Telegraf from 'telegraf';
 import * as ngrok from 'ngrok';
 
-import { app, telegram } from './config';
+import { AppConfig, TelegramConfig } from './config';
 import { LoggerModule } from './modules';
 import { StartController, TextController } from './controllers';
 
-const bot = new Telegraf(telegram.token);
+const bot = new Telegraf(TelegramConfig.token);
 
 bot.catch((err: Error): void => {
   LoggerModule.error(`ERROR: ${err}\n`);
@@ -15,22 +15,22 @@ bot.start(StartController);
 bot.on('text', TextController);
 
 const launch = async (): Promise<void> => {
-  LoggerModule.info('release -', app.release);
+  LoggerModule.info('release -', AppConfig.release);
 
-  if (telegram.webhook.isEnabled) {
+  if (TelegramConfig.webhook.isEnabled) {
     let host: string;
-    if (app.env === 'development') {
-      host = await ngrok.connect(telegram.webhook.port);
+    if (AppConfig.env === 'development') {
+      host = await ngrok.connect(TelegramConfig.webhook.port);
     } else {
       // eslint-disable-next-line prefer-destructuring
-      host = telegram.webhook.host;
+      host = TelegramConfig.webhook.host;
     }
 
     await bot.launch({
       webhook: {
         domain: host,
-        hookPath: telegram.webhook.path,
-        port: telegram.webhook.port,
+        hookPath: TelegramConfig.webhook.path,
+        port: TelegramConfig.webhook.port,
       },
     });
   } else {
