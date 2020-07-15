@@ -2,20 +2,20 @@ import Telegraf from 'telegraf';
 import * as ngrok from 'ngrok';
 
 import { app, telegram } from './config';
-import { logger } from './modules';
+import { LoggerModule } from './modules';
 import { StartController, TextController } from './controllers';
 
 const bot = new Telegraf(telegram.token);
 
 bot.catch((err: Error): void => {
-  logger.error(`ERROR: ${err}\n`);
+  LoggerModule.error(`ERROR: ${err}\n`);
 });
 
 bot.start(StartController);
 bot.on('text', TextController);
 
 const launch = async (): Promise<void> => {
-  logger.info('release -', app.release);
+  LoggerModule.info('release -', app.release);
 
   if (telegram.webhook.isEnabled) {
     let host: string;
@@ -38,12 +38,12 @@ const launch = async (): Promise<void> => {
     bot.startPolling();
   }
 
-  logger.info('bot - online');
+  LoggerModule.info('bot - online');
 };
 
 launch()
-  .then((): void => logger.info('all systems nominal'))
+  .then((): void => LoggerModule.info('all systems nominal'))
   .catch((err: Error): void => {
-    logger.error('bot - offline');
-    logger.error(err);
+    LoggerModule.error('bot - offline');
+    LoggerModule.error(err);
   });

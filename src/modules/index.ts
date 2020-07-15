@@ -1,3 +1,3 @@
-import { logger } from './logger.module';
+import { LoggerModule } from './logger.module';
 
-export { logger };
+export { LoggerModule };

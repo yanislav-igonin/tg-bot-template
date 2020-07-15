@@ -15,6 +15,6 @@ const createLogger = (): Logger => {
   });
 };
 
-const logger = createLogger();
+const LoggerModule = createLogger();
 
-export { logger };
+export { LoggerModule };
