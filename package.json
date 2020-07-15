@@ -10,7 +10,7 @@
     "lint": "eslint --ext .ts ./src",
     "lint:fix": "eslint --ext .ts ./src --fix"
   },
-  "author": "Yanislav Igonin <jan.oasis@gmail.com>",
+  "author": "Yanislav Igonin <yanislavdabest@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "ngrok": "^3.2.5",
