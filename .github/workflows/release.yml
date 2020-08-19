@@ -84,4 +84,5 @@ jobs:
         script: |
           docker login -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} ${{ env.REGISTRY }}
           docker pull ${{ env.REGISTRY }}:${{ github.event.release.tag_name }}
+          docker pull ${{ env.REGISTRY }}:latest
           docker service update --image ${{ env.REGISTRY }}:${{ github.event.release.tag_name }} ${{ env.SERVICE_NAME }}
