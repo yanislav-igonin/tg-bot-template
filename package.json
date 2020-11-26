@@ -4,11 +4,10 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "node build/index.js",
+    "start": "node dist/index.js",
     "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
-    "build": "tsc -p .",
-    "lint": "eslint --ext .ts ./src",
-    "lint:fix": "eslint --ext .ts ./src --fix"
+    "build": "tsc",
+    "lint": "eslint --ext .ts ./src"
   },
   "author": "Yanislav Igonin <yanislavdabest@gmail.com>",
   "license": "MIT",
