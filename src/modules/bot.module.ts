@@ -8,16 +8,16 @@ import { StartController, TextController } from '../controllers';
 class BotModule {
   private config: typeof Config;
 
-  public constructor(config: typeof Config) {
+  constructor(config: typeof Config) {
     this.config = config;
   }
 
-  public async launch(): Promise<void> {
+  async launch() {
     const { AppConfig, TelegramConfig } = this.config;
 
     const bot = new Telegraf(TelegramConfig.token);
 
-    bot.catch((err: Error): void => {
+    bot.catch((err: Error) => {
       LoggerModule.error(`ERROR: ${err}\n`);
     });
 
@@ -25,7 +25,7 @@ class BotModule {
     bot.on('text', TextController);
 
     if (TelegramConfig.webhook.isEnabled) {
-      let host: string;
+      let host;
       if (AppConfig.env === 'development') {
         host = await ngrok.connect(TelegramConfig.webhook.port);
       } else {
