@@ -3,7 +3,7 @@ import * as pino from 'pino';
 import { AppConfig } from '../config';
 
 const createLogger = () => {
-  const logLevel = (): string => {
+  const logLevel = () => {
     if (AppConfig.env === 'development') return 'debug';
 
     return 'info';
