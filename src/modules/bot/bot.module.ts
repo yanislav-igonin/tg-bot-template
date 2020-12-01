@@ -1,9 +1,9 @@
 import { Telegraf, Context } from 'telegraf';
 import * as ngrok from 'ngrok';
 
-import * as Config from '../config';
-import { LoggerModule } from './logger.module';
-import { StartController, TextController } from '../controllers';
+import * as Config from '../../config';
+import { LoggerModule } from '../logger.module';
+import { StartController, TextController } from './controllers';
 
 export class BotModule {
   private config: typeof Config;
