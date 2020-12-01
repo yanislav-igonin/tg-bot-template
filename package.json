@@ -12,6 +12,8 @@
   "author": "Yanislav Igonin <yanislavdabest@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
     "ngrok": "^3.2.5",
     "pino": "^5.17.0",
     "pino-pretty": "^3.6.1",
