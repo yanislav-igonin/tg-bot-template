@@ -9,7 +9,7 @@ interface MetricsOptions {
 }
 
 const defaultOptions: Omit<MetricsOptions, 'appName' | 'path'> = {
-  totalRequestsCounterName: 'bot_total_requests',
+  totalRequestsCounterName: 'bot_requests_total',
 };
 
 class Metrics {
@@ -44,6 +44,10 @@ class Metrics {
 
   get middleware() {
     return this.koaMiddleware;
+  }
+
+  request() {
+    this.totalRequestsCounter.inc({ botName: this.options.appName });
   }
 }
 

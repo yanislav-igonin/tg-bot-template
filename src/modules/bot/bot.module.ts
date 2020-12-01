@@ -4,6 +4,7 @@ import * as ngrok from 'ngrok';
 import * as Config from '../../common/config';
 import { LoggerModule } from '../logger.module';
 import { StartController, TextController } from './controllers';
+import { metrics } from '../../common/utils';
 
 export class BotModule {
   private config: typeof Config;
@@ -15,6 +16,12 @@ export class BotModule {
 
     this.bot.catch((err: Error) => {
       LoggerModule.error(`ERROR: ${err}\n`);
+    });
+
+    // TODO: move to middlewares
+    this.bot.use(async (_, next) => {
+      metrics.request();
+      await next();
     });
 
     this.bot.start(StartController);
