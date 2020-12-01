@@ -1,10 +1,10 @@
 import * as Koa from 'koa';
 import * as koaBody from 'koa-body';
 import * as helmet from 'koa-helmet';
-import { BotModule } from '.';
+import { BotModule } from '..';
 
-import * as Config from '../config';
-import { LoggerModule } from './logger.module';
+import * as Config from '../../config';
+import { LoggerModule } from '../logger.module';
 
 export class ApiModule {
   private config: typeof Config;
