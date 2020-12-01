@@ -1,5 +1,6 @@
 import * as Koa from 'koa';
 import * as koaBody from 'koa-body';
+import * as helmet from 'koa-helmet';
 import { BotModule } from '.';
 
 import * as Config from '../config';
@@ -16,6 +17,7 @@ export class ApiModule {
     this.bot = bot;
 
     this.server.use(koaBody());
+    this.server.use(helmet());
 
     // eslint-disable-next-line consistent-return
     this.server.use(async (ctx, next) => {
