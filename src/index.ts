@@ -4,7 +4,6 @@ import { LoggerModule, BotModule, ApiModule } from './modules';
 const launch = async () => {
   LoggerModule.info('release -', Config.AppConfig.release);
   const bot = new BotModule(Config);
-  // await bot.launch();
   const api = new ApiModule(Config, bot);
   await api.launch();
 };
