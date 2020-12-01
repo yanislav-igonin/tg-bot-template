@@ -5,7 +5,7 @@ import * as Config from '../config';
 import { LoggerModule } from './logger.module';
 import { StartController, TextController } from '../controllers';
 
-class BotModule {
+export class BotModule {
   private config: typeof Config;
   private bot: Telegraf<Context>;
 
@@ -48,7 +48,3 @@ class BotModule {
     LoggerModule.info('bot - online');
   }
 }
-
-const botModule = new BotModule(Config);
-
-export { botModule as BotModule };
