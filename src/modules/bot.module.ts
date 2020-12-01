@@ -21,29 +21,38 @@ export class BotModule {
     this.bot.on('text', TextController);
   }
 
+  get telegraf() {
+    return this.bot;
+  }
+
   async launch() {
     const { AppConfig, TelegramConfig } = this.config;
 
-    if (TelegramConfig.webhook.isEnabled) {
-      let host;
-      if (AppConfig.env === 'development') {
-        host = await ngrok.connect(TelegramConfig.webhook.port);
-      } else {
-      // eslint-disable-next-line prefer-destructuring
-        host = TelegramConfig.webhook.host;
-      }
-
-      await this.bot.launch({
-        webhook: {
-          domain: host,
-          hookPath: TelegramConfig.webhook.path,
-          port: TelegramConfig.webhook.port,
-        },
-      });
+    // if (TelegramConfig.webhook.isEnabled) {
+    let host;
+    if (AppConfig.env === 'development') {
+      host = await ngrok.connect(TelegramConfig.webhook.port);
     } else {
-      await this.bot.telegram.deleteWebhook();
-      this.bot.startPolling();
+      // eslint-disable-next-line prefer-destructuring
+      host = TelegramConfig.webhook.host;
     }
+
+    const url = `${host}${TelegramConfig.webhook.path}`;
+
+    console.log('DEBUG ~ file: bot.module.ts ~ line 42 ~ BotModule ~ launch ~ url', url);
+    await this.bot.telegram.setWebhook(url);
+
+    // await this.bot.launch({
+    //   webhook: {
+    //     domain: host,
+    //     hookPath: TelegramConfig.webhook.path,
+    //     port: TelegramConfig.webhook.port,
+    //   },
+    // });
+    // } else {
+    //   await this.bot.telegram.deleteWebhook();
+    //   this.bot.startPolling();
+    // }
 
     LoggerModule.info('bot - online');
   }
