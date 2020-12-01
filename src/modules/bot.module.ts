@@ -39,7 +39,6 @@ export class BotModule {
 
     const url = `${host}${TelegramConfig.webhook.path}`;
 
-    console.log('DEBUG ~ file: bot.module.ts ~ line 42 ~ BotModule ~ launch ~ url', url);
     await this.bot.telegram.setWebhook(url);
 
     // await this.bot.launch({

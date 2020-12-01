@@ -18,7 +18,7 @@ export class ApiModule {
     this.server.use(koaBody());
 
     this.server.use(async (ctx, next) => {
-      if (ctx.method !== 'POST' || ctx.url !== '/secret-path') {
+      if (ctx.method !== 'POST' && ctx.url !== Config.TelegramConfig.webhook.path) {
         return next();
       }
       // @ts-ignore
