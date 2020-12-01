@@ -10,5 +10,6 @@ services:
       - WEBHOOK_HOST=${WEBHOOK_HOST}
       - WEBHOOK_PORT=${WEBHOOK_PORT}
       - WEBHOOK_PATH=${WEBHOOK_PATH}
+      - METRICS_PATH=${METRICS_PATH}
     volumes:
       - ./src:/app/src
