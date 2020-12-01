@@ -28,7 +28,6 @@ export class BotModule {
   async launch() {
     const { AppConfig, TelegramConfig } = this.config;
 
-    // if (TelegramConfig.webhook.isEnabled) {
     let host;
     if (AppConfig.env === 'development') {
       host = await ngrok.connect(TelegramConfig.webhook.port);
@@ -40,18 +39,6 @@ export class BotModule {
     const url = `${host}${TelegramConfig.webhook.path}`;
 
     await this.bot.telegram.setWebhook(url);
-
-    // await this.bot.launch({
-    //   webhook: {
-    //     domain: host,
-    //     hookPath: TelegramConfig.webhook.path,
-    //     port: TelegramConfig.webhook.port,
-    //   },
-    // });
-    // } else {
-    //   await this.bot.telegram.deleteWebhook();
-    //   this.bot.startPolling();
-    // }
 
     LoggerModule.info('bot - online');
   }
