@@ -1,4 +1,4 @@
-import Telegraf from 'telegraf';
+import { Telegraf, Context } from 'telegraf';
 import * as ngrok from 'ngrok';
 
 import * as Config from '../config';
@@ -7,22 +7,22 @@ import { StartController, TextController } from '../controllers';
 
 class BotModule {
   private config: typeof Config;
+  private bot: Telegraf<Context>;
 
   constructor(config: typeof Config) {
     this.config = config;
+    this.bot = new Telegraf(config.TelegramConfig.token);
+
+    this.bot.catch((err: Error) => {
+      LoggerModule.error(`ERROR: ${err}\n`);
+    });
+
+    this.bot.start(StartController);
+    this.bot.on('text', TextController);
   }
 
   async launch() {
     const { AppConfig, TelegramConfig } = this.config;
-
-    const bot = new Telegraf(TelegramConfig.token);
-
-    bot.catch((err: Error) => {
-      LoggerModule.error(`ERROR: ${err}\n`);
-    });
-
-    bot.start(StartController);
-    bot.on('text', TextController);
 
     if (TelegramConfig.webhook.isEnabled) {
       let host;
@@ -33,7 +33,7 @@ class BotModule {
         host = TelegramConfig.webhook.host;
       }
 
-      await bot.launch({
+      await this.bot.launch({
         webhook: {
           domain: host,
           hookPath: TelegramConfig.webhook.path,
@@ -41,8 +41,8 @@ class BotModule {
         },
       });
     } else {
-      await bot.telegram.deleteWebhook();
-      bot.startPolling();
+      await this.bot.telegram.deleteWebhook();
+      this.bot.startPolling();
     }
 
     LoggerModule.info('bot - online');
