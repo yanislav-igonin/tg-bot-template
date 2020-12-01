@@ -1,7 +1,7 @@
 import { Telegraf, Context } from 'telegraf';
 import * as ngrok from 'ngrok';
 
-import * as Config from '../../config';
+import * as Config from '../../common/config';
 import { LoggerModule } from '../logger.module';
 import { StartController, TextController } from './controllers';
 

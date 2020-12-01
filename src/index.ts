@@ -1,4 +1,4 @@
-import * as Config from './config';
+import * as Config from './common/config';
 import { LoggerModule, BotModule, ApiModule } from './modules';
 
 const launch = async () => {
