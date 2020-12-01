@@ -7,9 +7,10 @@ services:
     environment: 
       - NODE_ENV=development
       - BOT_TOKEN=${BOT_TOKEN}
+      - METRICS_PATH=${METRICS_PATH}
+      - APP_NAME=${APP_NAME}
       - WEBHOOK_HOST=${WEBHOOK_HOST}
       - WEBHOOK_PORT=${WEBHOOK_PORT}
       - WEBHOOK_PATH=${WEBHOOK_PATH}
-      - METRICS_PATH=${METRICS_PATH}
     volumes:
       - ./src:/app/src
