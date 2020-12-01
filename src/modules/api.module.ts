@@ -17,6 +17,7 @@ export class ApiModule {
 
     this.server.use(koaBody());
 
+    // eslint-disable-next-line consistent-return
     this.server.use(async (ctx, next) => {
       if (ctx.method !== 'POST' && ctx.url !== Config.TelegramConfig.webhook.path) {
         return next();

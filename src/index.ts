@@ -11,6 +11,6 @@ const launch = async () => {
 launch()
   .then(() => LoggerModule.info('all systems nominal'))
   .catch((err: Error) => {
-    LoggerModule.error('bot - offline');
+    LoggerModule.error('app - offline');
     LoggerModule.error(err);
   });
