@@ -1,10 +1,9 @@
 import * as Koa from 'koa';
-import * as koaBody from 'koa-body';
-import * as helmet from 'koa-helmet';
 import { BotModule } from '..';
 
 import * as Config from '../../config';
 import { LoggerModule } from '../logger.module';
+import { middlewares } from './middlewares';
 
 export class ApiModule {
   private config: typeof Config;
@@ -16,8 +15,7 @@ export class ApiModule {
     this.server = new Koa();
     this.bot = bot;
 
-    this.server.use(koaBody());
-    this.server.use(helmet());
+    middlewares.forEach((m) => this.server.use(m));
 
     // eslint-disable-next-line consistent-return
     this.server.use(async (ctx, next) => {

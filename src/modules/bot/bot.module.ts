@@ -37,9 +37,7 @@ export class BotModule {
     }
 
     const url = `${host}${TelegramConfig.webhook.path}`;
-
     await this.bot.telegram.setWebhook(url);
-
     LoggerModule.info('bot - online');
   }
 }
