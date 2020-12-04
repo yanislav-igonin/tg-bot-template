@@ -5,6 +5,7 @@ const AppConfig = {
     appName: process.env.APP_NAME || 'typescript-telegram-bot-template',
     path: process.env.METRICS_PATH || '/metrics',
   },
+  apiToken: process.env.API_TOKEN || 'secret',
 };
 
 export { AppConfig };
