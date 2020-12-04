@@ -26,7 +26,7 @@ class Metrics {
     };
     this.registry = new client.Registry();
     this.koaMiddleware = async (ctx, next) => {
-      if (ctx.req.method === 'GET' && ctx.req.url === this.options.path) {
+      if (ctx.method === 'GET' && ctx.url === `/api${this.options.path}`) {
         ctx.body = this.registry.metrics();
       } else {
         await next();
