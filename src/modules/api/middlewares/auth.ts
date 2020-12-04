@@ -1,7 +1,7 @@
-import { Context, Next } from 'koa';
+import { Middleware } from 'koa';
 import * as config from '../../../common/config';
 
-export const auth = async (ctx: Context, next: Next) => {
+export const auth: Middleware = async (ctx, next) => {
   if (ctx.url !== config.TelegramConfig.webhook.path) {
     const { authorization }: { authorization: string } = ctx.request.header;
     // TODO: add http error
