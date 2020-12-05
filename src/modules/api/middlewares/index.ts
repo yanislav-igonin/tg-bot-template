@@ -5,6 +5,8 @@ import { metrics } from '../../../common/utils';
 import { auth } from './auth';
 import { errorHandler } from './errorHandler';
 
+export * from './botHandler';
+
 export const middlewares = [
   koaBody(),
   helmet(),

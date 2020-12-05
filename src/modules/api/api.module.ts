@@ -3,7 +3,7 @@ import { BotModule } from '..';
 
 import * as Config from '../../common/config';
 import { LoggerModule } from '../logger.module';
-import { middlewares } from './middlewares';
+import { middlewares, botHandler } from './middlewares';
 
 export class ApiModule {
   private config: typeof Config;
@@ -17,15 +17,7 @@ export class ApiModule {
 
     middlewares.forEach((m) => this.server.use(m));
 
-    // eslint-disable-next-line consistent-return
-    this.server.use(async (ctx, next) => {
-      if (ctx.method !== 'POST' && ctx.url !== Config.TelegramConfig.webhook.path) {
-        return next();
-      }
-      // @ts-ignore
-      await bot.telegraf.handleUpdate(ctx.request.body, ctx.response);
-      ctx.status = 200;
-    });
+    this.server.use(botHandler(this.bot, this.config));
     this.server.use(async (ctx) => {
       ctx.body = 'Hello World';
     });
