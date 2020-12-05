@@ -12,7 +12,7 @@ export class BotModule {
 
   constructor(config: typeof Config) {
     this.config = config;
-    this.bot = new Telegraf(config.TelegramConfig.token);
+    this.bot = new Telegraf(config.telegramConfig.token);
 
     this.bot.catch((err: Error) => {
       LoggerModule.error(`ERROR: ${err}\n`);
@@ -33,17 +33,17 @@ export class BotModule {
   }
 
   async launch() {
-    const { AppConfig, TelegramConfig } = this.config;
+    const { appConfig, telegramConfig } = this.config;
 
     let host;
-    if (AppConfig.env === 'development') {
-      host = await ngrok.connect(TelegramConfig.webhook.port);
+    if (appConfig.env === 'development') {
+      host = await ngrok.connect(telegramConfig.webhook.port);
     } else {
       // eslint-disable-next-line prefer-destructuring
-      host = TelegramConfig.webhook.host;
+      host = telegramConfig.webhook.host;
     }
 
-    const url = `${host}${TelegramConfig.webhook.path}`;
+    const url = `${host}${telegramConfig.webhook.path}`;
     await this.bot.telegram.setWebhook(url);
     LoggerModule.info('bot - online');
   }

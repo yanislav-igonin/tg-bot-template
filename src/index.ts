@@ -1,10 +1,10 @@
-import * as Config from './common/config';
+import * as config from './common/config';
 import { LoggerModule, BotModule, ApiModule } from './modules';
 
 const launch = async () => {
-  LoggerModule.info('release -', Config.AppConfig.release);
-  const bot = new BotModule(Config);
-  const api = new ApiModule(Config, bot);
+  LoggerModule.info('release -', config.appConfig.release);
+  const bot = new BotModule(config);
+  const api = new ApiModule(config, bot);
   await api.launch();
 };
 

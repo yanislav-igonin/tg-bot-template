@@ -24,9 +24,9 @@ export class ApiModule {
   }
 
   async launch() {
-    const { TelegramConfig } = this.config;
+    const { telegramConfig } = this.config;
     await this.bot.launch();
-    this.server.listen(TelegramConfig.webhook.port);
+    this.server.listen(telegramConfig.webhook.port);
     LoggerModule.info('server - online');
   }
 }

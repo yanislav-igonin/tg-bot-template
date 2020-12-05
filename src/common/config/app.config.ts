@@ -1,4 +1,4 @@
-const AppConfig = {
+const appConfig = {
   env: process.env.NODE_ENV || 'development',
   release: process.env.CI_COMMIT_TAG || 'development',
   metrics: {
@@ -8,4 +8,4 @@ const AppConfig = {
   apiToken: process.env.API_TOKEN || 'secret',
 };
 
-export { AppConfig };
+export { appConfig };

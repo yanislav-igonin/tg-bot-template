@@ -7,7 +7,7 @@ export const botHandler = (
   config: typeof Config,
   // eslint-disable-next-line consistent-return
 ): Middleware => async (ctx, next) => {
-  if (ctx.method !== 'POST' && ctx.url !== config.TelegramConfig.webhook.path) {
+  if (ctx.method !== 'POST' && ctx.url !== config.telegramConfig.webhook.path) {
     return next();
   }
   // @ts-ignore

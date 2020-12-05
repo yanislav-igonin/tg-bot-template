@@ -1,4 +1,4 @@
-import { AppConfig } from './app.config';
-import { TelegramConfig } from './telegram.config';
+import { appConfig } from './app.config';
+import { telegramConfig } from './telegram.config';
 
-export { AppConfig, TelegramConfig };
+export { appConfig, telegramConfig };

@@ -1,4 +1,4 @@
-const TelegramConfig = {
+const telegramConfig = {
   token: process.env.BOT_TOKEN || '',
   webhook: {
     host: process.env.WEBHOOK_HOST || '',
@@ -9,4 +9,4 @@ const TelegramConfig = {
   },
 };
 
-export { TelegramConfig };
+export { telegramConfig };

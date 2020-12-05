@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
 import * as client from 'prom-client';
-import { AppConfig } from '../config';
+import { appConfig } from '../config';
 
 interface MetricsOptions {
   appName: string;
@@ -21,7 +21,7 @@ class Metrics {
   private totalRequestsCounter: client.Counter<'botName'>;
   private totalErrorsCounterName: client.Counter<'botName'>;
 
-  constructor(options: typeof AppConfig.metrics) {
+  constructor(options: typeof appConfig.metrics) {
     this.options = {
       ...defaultOptions,
       path: options.path,
@@ -64,6 +64,6 @@ class Metrics {
   }
 }
 
-const metrics = new Metrics(AppConfig.metrics);
+const metrics = new Metrics(appConfig.metrics);
 
 export { metrics };
