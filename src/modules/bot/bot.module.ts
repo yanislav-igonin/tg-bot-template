@@ -15,6 +15,7 @@ export class BotModule {
     this.bot = new Telegraf(config.telegramConfig.token);
 
     this.bot.catch((err: Error) => {
+      metrics.error();
       LoggerModule.error(`ERROR: ${err}\n`);
     });
 
