@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
 import * as client from 'prom-client';
-import { appConfig } from '../config';
+import { appConfig, telegramConfig } from '../config';
 
 interface MetricsOptions {
   appName: string;
@@ -19,9 +19,9 @@ class Metrics {
   private registry: client.Registry;
   private koaMiddleware: Middleware;
   private totalRequestsCounter: client.Counter<'botName'>;
-  private totalErrorsCounterName: client.Counter<'botName'>;
+  private totalErrorsCounter: client.Counter<'botName'>;
 
-  constructor(options: typeof appConfig.metrics) {
+  constructor(options: typeof appConfig.metrics, webhookPath: string) {
     this.options = {
       ...defaultOptions,
       path: options.path,
@@ -29,7 +29,8 @@ class Metrics {
     };
     this.registry = new client.Registry();
     this.koaMiddleware = async (ctx, next) => {
-      if (ctx.method === 'GET' && ctx.url === `/api${this.options.path}`) {
+      const url = `${webhookPath}/api${this.options.path}`;
+      if (ctx.method === 'GET' && ctx.url === url) {
         ctx.body = this.registry.metrics();
       } else {
         await next();
@@ -43,12 +44,12 @@ class Metrics {
     });
     this.registry.registerMetric(this.totalRequestsCounter);
 
-    this.totalErrorsCounterName = new client.Counter({
+    this.totalErrorsCounter = new client.Counter({
       name: this.options.totalErrorsCounterName,
       help: 'Total bot errors',
       labelNames: ['botName'],
     });
-    this.registry.registerMetric(this.totalErrorsCounterName);
+    this.registry.registerMetric(this.totalErrorsCounter);
   }
 
   get middleware() {
@@ -60,10 +61,10 @@ class Metrics {
   }
 
   error() {
-    this.totalErrorsCounterName.inc({ botName: this.options.appName });
+    this.totalErrorsCounter.inc({ botName: this.options.appName });
   }
 }
 
-const metrics = new Metrics(appConfig.metrics);
+const metrics = new Metrics(appConfig.metrics, telegramConfig.webhook.path);
 
 export { metrics };
