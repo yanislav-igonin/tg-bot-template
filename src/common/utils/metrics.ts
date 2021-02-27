@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
 import * as client from 'prom-client';
-import { appConfig, telegramConfig } from '../config';
+import { appConfig } from '../config';
 
 interface MetricsOptions {
   appName: string;
@@ -21,7 +21,7 @@ class Metrics {
   private totalRequestsCounter: client.Counter<'botName'>;
   private totalErrorsCounter: client.Counter<'botName'>;
 
-  constructor(options: typeof appConfig.metrics, webhookPath: string) {
+  constructor(options: typeof appConfig.metrics) {
     this.options = {
       ...defaultOptions,
       path: options.path,
@@ -29,7 +29,7 @@ class Metrics {
     };
     this.registry = new client.Registry();
     this.koaMiddleware = async (ctx, next) => {
-      const url = `${webhookPath}/api${this.options.path}`;
+      const url = `/api${this.options.path}`;
       if (ctx.method === 'GET' && ctx.url === url) {
         ctx.body = this.registry.metrics();
       } else {
@@ -65,6 +65,6 @@ class Metrics {
   }
 }
 
-const metrics = new Metrics(appConfig.metrics, telegramConfig.webhook.path);
+const metrics = new Metrics(appConfig.metrics);
 
 export { metrics };
