@@ -27,5 +27,6 @@ rules:
     - error
     - accessibility: no-public
   lines-between-class-members: 0
+  import/no-unresolved: 0
 env:
   node: true
