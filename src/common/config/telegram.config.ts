@@ -1,4 +1,6 @@
-const telegramConfig = {
+import { TelegramConfig } from './config.interface';
+
+const telegramConfig: TelegramConfig = {
   token: process.env.BOT_TOKEN || '',
   webhook: {
     host: process.env.WEBHOOK_HOST || '',
