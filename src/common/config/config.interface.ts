@@ -4,7 +4,7 @@ export interface AppConfig {
   metrics: {
     appName: string;
     path: string;
-  },
+  };
   apiToken: string;
 }
 
@@ -12,9 +12,9 @@ export interface TelegramConfig {
   token: string;
   webhook: {
     host: string;
-    port:number;
+    port: number;
     path: string;
-  },
+  };
 }
 
 export interface Config {
