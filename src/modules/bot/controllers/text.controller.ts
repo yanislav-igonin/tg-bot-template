@@ -1,12 +1,6 @@
-import { Context, NarrowedContext } from 'telegraf';
-import { Update, Message } from 'telegraf/typings/telegram-types';
+import { Composer } from 'telegraf';
 
-type TextContext = NarrowedContext<Context, {
-  message: Update.New & Update.NonChannel & Message.TextMessage;
-  update_id: number;
-}>;
-
-export const TextController = async (ctx: TextContext) => {
+export const TextController = Composer.on('text', async (ctx) => {
   const { message } = ctx;
   ctx.reply(`${new Date().toLocaleString()} - ${message.text}`);
-};
+});
