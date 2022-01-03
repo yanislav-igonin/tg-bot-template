@@ -18,9 +18,6 @@ export class ApiModule {
     middlewares.forEach((m) => this.server.use(m));
 
     this.server.use(botHandler(this.bot, this.config));
-    this.server.use(async (ctx) => {
-      ctx.body = 'Hello World';
-    });
   }
 
   async launch() {

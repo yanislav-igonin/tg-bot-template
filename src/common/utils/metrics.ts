@@ -31,7 +31,7 @@ class Metrics {
     this.koaMiddleware = async (ctx, next) => {
       const url = `/api${this.options.path}`;
       if (ctx.method === 'GET' && ctx.url === url) {
-        ctx.body = this.registry.metrics();
+        ctx.body = await this.registry.metrics();
       } else {
         await next();
       }
