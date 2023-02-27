@@ -1,6 +1,6 @@
-import { config } from '../config';
-import { type User } from '../database';
-import { database } from '../database';
+import { config } from '@/config';
+import { type User } from '@/database';
+import { database } from '@/database';
 
 export const get = async (id: number) =>
   await database.user.findUnique({ where: { id } });
