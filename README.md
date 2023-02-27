@@ -1,4 +1,4 @@
-# tg-bot-template
+# Telegram Bot Template
 
 # Stack
 - Typescript
