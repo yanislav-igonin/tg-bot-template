@@ -19,3 +19,6 @@ npx prisma db push
 ```
 npm run dev
 ```
+
+# Deploy
+Can be deployed to any VPS or cloud service. I recommend using [Railway](https://railway.app/) for this purpose.
