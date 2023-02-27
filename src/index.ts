@@ -1,16 +1,65 @@
-import * as config from './common/config';
-import { LoggerModule, BotModule, ApiModule } from './modules';
+import { config } from '@/config';
+import { database } from '@/database';
+import { logger } from '@/logger';
+import { replies } from '@/replies';
+import { user as userRepo } from '@/repositories';
+import { valueOrNull } from '@/values';
+import { Bot } from 'grammy';
 
-const launch = async () => {
-  LoggerModule.info('release -', config.appConfig.release);
-  const bot = new BotModule(config);
-  const api = new ApiModule(config, bot);
-  await api.launch();
+const bot = new Bot(config.botToken);
+
+bot.command('start', async (context) => {
+  await context.reply(replies.start);
+});
+
+bot.command('help', async (context) => {
+  await context.reply(replies.help);
+});
+
+bot.on('message:text', async (context) => {
+  const text = context.message.text;
+  const { message_id: replyToMessageId, from } = context.message;
+
+  const {
+    id: userId,
+    first_name: firstName,
+    language_code: language,
+    last_name: lastName,
+    username,
+  } = from;
+
+  let user = await userRepo.get(userId);
+  if (!user) {
+    user = await userRepo.create({
+      firstName: valueOrNull(firstName),
+      id: userId,
+      language: valueOrNull(language),
+      lastName: valueOrNull(lastName),
+      username: valueOrNull(username),
+    });
+  }
+
+  try {
+    const message = `Echo: ${text}`;
+    await context.reply(message, { reply_to_message_id: replyToMessageId });
+  } catch (error) {
+    await context.reply(replies.error);
+    throw error;
+  }
+});
+
+bot.catch(logger.error);
+
+const start = async () => {
+  await database.$connect();
+  logger.info('database connected');
+  // eslint-disable-next-line promise/prefer-await-to-then
+  bot.start().catch(async (error) => {
+    logger.error(error);
+    await database.$disconnect();
+  });
 };
 
-launch()
-  .then(() => LoggerModule.info('all systems nominal'))
-  .catch((err: Error) => {
-    LoggerModule.error('app - offline');
-    LoggerModule.error(err);
-  });
+start()
+  .then(() => logger.info('bot started'))
+  .catch(logger.error);
