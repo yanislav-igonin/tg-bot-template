@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "baseUrl": "./src",
+    "paths": {
+      "@/config": [
+        "config"
+      ],
+      "@/replies": [
+        "replies"
+      ],
+      "@/values": [
+        "values"
+      ],
+      "@/repositories": [
+        "repositories"
+      ],
+      "@/prompt": [
+        "prompt"
+      ],
+      "@/logger": [
+        "logger"
+      ],
+      "@/database": [
+        "database"
+      ]
+    },
+    "outDir": "dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
