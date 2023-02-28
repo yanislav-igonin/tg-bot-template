@@ -28,11 +28,11 @@ bot.on('message:text', async (context) => {
     username,
   } = from;
 
-  let user = await userRepo.get(userId);
+  let user = await userRepo.get(userId.toString());
   if (!user) {
     user = await userRepo.create({
       firstName: valueOrNull(firstName),
-      id: userId,
+      id: userId.toString(),
       language: valueOrNull(language),
       lastName: valueOrNull(lastName),
       username: valueOrNull(username),
