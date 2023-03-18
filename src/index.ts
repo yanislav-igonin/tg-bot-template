@@ -3,8 +3,6 @@ import { database } from '@/database';
 import { logger } from '@/logger';
 import { saveChatMiddleware, saveUserMiddleware } from '@/middlewares';
 import { replies } from '@/replies';
-import { user as userRepo } from '@/repositories';
-import { valueOrNull } from '@/values';
 import { Bot } from 'grammy';
 
 const bot = new Bot(config.botToken);
@@ -22,26 +20,7 @@ bot.command('help', async (context) => {
 
 bot.on('message:text', async (context) => {
   const text = context.message.text;
-  const { message_id: replyToMessageId, from } = context.message;
-
-  const {
-    id: userId,
-    first_name: firstName,
-    language_code: language,
-    last_name: lastName,
-    username,
-  } = from;
-
-  let user = await userRepo.get(userId.toString());
-  if (!user) {
-    user = await userRepo.create({
-      firstName: valueOrNull(firstName),
-      id: userId.toString(),
-      language: valueOrNull(language),
-      lastName: valueOrNull(lastName),
-      username: valueOrNull(username),
-    });
-  }
+  const { message_id: replyToMessageId } = context.message;
 
   try {
     const message = `Echo: ${text}`;
