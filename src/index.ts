@@ -8,7 +8,7 @@ import { valueOrNull } from '@/values';
 import { Bot } from 'grammy';
 
 const bot = new Bot(config.botToken);
-
+bot.catch(logger.error);
 bot.use(saveUserMiddleware);
 bot.use(saveChatMiddleware);
 
@@ -51,8 +51,6 @@ bot.on('message:text', async (context) => {
     throw error;
   }
 });
-
-bot.catch(logger.error);
 
 const start = async () => {
   await database.$connect();
