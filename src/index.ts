@@ -1,11 +1,11 @@
 import { config } from '@/config';
 import { database } from '@/database';
 import { logger } from '@/logger';
+import { saveChatMiddleware, saveUserMiddleware } from '@/middlewares';
 import { replies } from '@/replies';
 import { user as userRepo } from '@/repositories';
 import { valueOrNull } from '@/values';
 import { Bot } from 'grammy';
-import { saveChatMiddleware, saveUserMiddleware } from 'middlewares';
 
 const bot = new Bot(config.botToken);
 

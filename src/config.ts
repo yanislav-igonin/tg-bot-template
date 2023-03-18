@@ -1,4 +1,4 @@
-import { valueOrDefault } from './values';
+import { valueOrDefault } from '@/values';
 
 /* eslint-disable node/no-process-env */
 export const config = {
