@@ -1,8 +1,14 @@
+import { valueOrDefault } from './values';
+
 /* eslint-disable node/no-process-env */
 export const config = {
-  allowedUsernames: process.env.ALLOWED_USERNAMES?.split(',') ?? [],
-  botToken: process.env.BOT_TOKEN ?? '',
-  env: process.env.ENV ?? 'development',
+  allowedUsernames: valueOrDefault(
+    process.env.ALLOWED_USERNAMES?.split(','),
+    [],
+  ),
+  botToken: valueOrDefault(process.env.BOT_TOKEN, ''),
+  env: valueOrDefault(process.env.ENV, 'development'),
 };
+/* eslint-enable node/no-process-env */
 
 export const isProduction = () => config.env === 'production';
