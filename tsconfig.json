@@ -16,9 +16,6 @@
       "@/repositories": [
         "repositories"
       ],
-      "@/prompt": [
-        "prompt"
-      ],
       "@/logger": [
         "logger"
       ],
