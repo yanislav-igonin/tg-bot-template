@@ -1,6 +1,5 @@
-import { type User as UserType } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 
-export const database = new PrismaClient();
+export { type Chat, type User } from '@prisma/client';
 
-export type User = UserType;
+export const database = new PrismaClient();

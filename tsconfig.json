@@ -24,6 +24,9 @@
       ],
       "@/database": [
         "database"
+      ],
+      "@/middlewares": [
+        "database"
       ]
     },
     "outDir": "dist",

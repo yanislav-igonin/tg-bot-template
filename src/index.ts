@@ -5,8 +5,12 @@ import { replies } from '@/replies';
 import { user as userRepo } from '@/repositories';
 import { valueOrNull } from '@/values';
 import { Bot } from 'grammy';
+import { saveChatMiddleware, saveUserMiddleware } from 'middlewares';
 
 const bot = new Bot(config.botToken);
+
+bot.use(saveUserMiddleware);
+bot.use(saveChatMiddleware);
 
 bot.command('start', async (context) => {
   await context.reply(replies.start);
