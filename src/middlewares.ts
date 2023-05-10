@@ -1,7 +1,7 @@
 import { chat as chatRepo, user as userRepo } from '@/repositories';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
-import { type Context, type NextFunction } from 'grammy';
+import { type NextFunction } from 'grammy';
 // eslint-disable-next-line import/extensions
 import { type Chat as TelegramChat } from 'grammy/out/types.node';
 
@@ -15,7 +15,7 @@ export const stateMiddleware = async (
   await next();
 };
 
-export const saveChatMiddleware = async (
+export const chatMiddleware = async (
   context: BotContext,
   next: NextFunction,
 ) => {
@@ -45,7 +45,7 @@ export const saveChatMiddleware = async (
   await next();
 };
 
-export const saveUserMiddleware = async (
+export const userMiddleware = async (
   context: BotContext,
   next: NextFunction,
 ) => {
