@@ -111,3 +111,6 @@ dist/
 # Prisma shit
 **/*/dev.db
 **/*/dev.db-journal
+
+# DB shit
+data/
