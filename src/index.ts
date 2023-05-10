@@ -1,12 +1,18 @@
 import { config } from '@/config';
 import { database } from '@/database';
 import { logger } from '@/logger';
-import { saveChatMiddleware, saveUserMiddleware } from '@/middlewares';
+import {
+  saveChatMiddleware,
+  saveUserMiddleware,
+  stateMiddleware,
+} from '@/middlewares';
 import { replies } from '@/replies';
+import { type BotContext } from 'context';
 import { Bot } from 'grammy';
 
-const bot = new Bot(config.botToken);
+const bot = new Bot<BotContext>(config.botToken);
 bot.catch(logger.error);
+bot.use(stateMiddleware);
 bot.use(saveUserMiddleware);
 bot.use(saveChatMiddleware);
 
