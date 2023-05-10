@@ -95,7 +95,7 @@ export const allowedUserMiddleware = async (
   next: NextFunction,
 ) => {
   const { isAllowed, username } = context.state.user;
-  const isAdmin = userRepo.checkAdmin(username ?? '');
+  const isAdmin = userRepo.checkIsAdmin(username ?? '');
 
   const hasAccess = isAllowed || isAdmin;
 
