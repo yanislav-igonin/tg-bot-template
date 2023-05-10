@@ -1,7 +1,12 @@
 import { config } from '@/config';
 import { database } from '@/database';
 import { logger } from '@/logger';
-import { chatMiddleware, stateMiddleware, userMiddleware } from '@/middlewares';
+import {
+  allowedUserMiddleware,
+  chatMiddleware,
+  stateMiddleware,
+  userMiddleware,
+} from '@/middlewares';
 import { replies } from '@/replies';
 import { type BotContext } from 'context';
 import { Bot } from 'grammy';
@@ -11,6 +16,7 @@ bot.catch(logger.error);
 bot.use(stateMiddleware);
 bot.use(userMiddleware);
 bot.use(chatMiddleware);
+bot.use(allowedUserMiddleware);
 
 bot.command('start', async (context) => {
   await context.reply(replies.start);

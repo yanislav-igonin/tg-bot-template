@@ -89,3 +89,21 @@ export const userMiddleware = async (
   // eslint-disable-next-line node/callback-return
   await next();
 };
+
+export const allowedUserMiddleware = async (
+  context: BotContext,
+  next: NextFunction,
+) => {
+  const { isAllowed, username } = context.state.user;
+  const isAdmin = userRepo.checkAdmin(username ?? '');
+
+  const hasAccess = isAllowed || isAdmin;
+
+  if (!hasAccess) {
+    await context.reply('Access denied');
+    return;
+  }
+
+  // eslint-disable-next-line node/callback-return
+  await next();
+};
