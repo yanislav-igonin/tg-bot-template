@@ -16,6 +16,7 @@ model User {
   firstName String?
   lastName  String?
   language  String?
+  isAllowed Boolean @default(false)
   createdAt DateTime @default(now())
 
   @@map("users")
