@@ -1,4 +1,5 @@
 // eslint-disable-next-line import/no-cycle
+import { BaseModel } from './base.model';
 import { MessageModel } from './message.model';
 import {
   BaseEntity,
@@ -10,28 +11,25 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class UserModel extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
+export class UserModel extends BaseModel {
   @Column()
-  username!: string;
+  tgId!: string;
 
-  @Column()
-  firstName!: string;
+  @Column({nullable: true})
+  username!: string | null;
 
-  @Column()
-  lastName!: string;
+  @Column({nullable: true})
+  firstName!: string | null;
 
-  @Column()
-  language!: string;
+  @Column({nullable: true})
+  lastName!: string | null;
+
+  @Column({nullable: true})
+  language!: string | null;
 
   @Column()
   isAllowed!: boolean;
-
-  @CreateDateColumn()
-  createdAt!: Date;
-
+  
   @OneToMany(() => MessageModel, (message) => message.user)
   messages!: MessageModel[];
 }

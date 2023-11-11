@@ -1,3 +1,5 @@
+import { BaseModel } from './base.model';
+import { ChatModel } from './chat.model';
 import { UserModel } from './user.model';
 import {
   BaseEntity,
@@ -9,16 +11,13 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class MessageModel extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id!: number;
-
+export class MessageModel extends BaseModel {
   @Column()
   text!: string;
 
   @ManyToOne(() => UserModel, (user) => user.messages)
   user!: UserModel;
 
-  @CreateDateColumn()
-  createdAt!: Date;
+  @ManyToOne(()=>ChatModel, (chat) => chat.messages)
+  chat!: ChatModel;
 }
