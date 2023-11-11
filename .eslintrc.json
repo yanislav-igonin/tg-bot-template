@@ -29,6 +29,11 @@
         "ignoreRegExpLiterals": true,
         "ignoreComments": true
       }
+    ],
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "canonical/filename-match-regex": [
+      "error",
+      "^[a-z0-9-]+(\\.[a-z0-9-]+)+$"
     ]
   }
 }
