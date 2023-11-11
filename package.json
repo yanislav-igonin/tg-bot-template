@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc && tsc-alias",
     "start": "node dist/index.js",
+    "db:migration": "typeorm migration:create",
     "db:seed": "ts-node -r dotenv/config src/seeds/index.ts"
   },
   "repository": {

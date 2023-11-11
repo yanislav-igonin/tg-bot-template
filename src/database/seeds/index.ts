@@ -1,4 +1,4 @@
-import { database } from '../database2';
+import { database } from '..';
 import { initialSeed } from './1-initial.seeds';
 const seeds = [initialSeed];
 
