@@ -1,5 +1,5 @@
 import { config } from '@/config';
-import { database } from '@/database';
+import { database, messageModel } from '@/database';
 import { logger } from '@/logger';
 import {
   allowedUserMiddleware,
@@ -27,12 +27,32 @@ bot.command('help', async (context) => {
 });
 
 bot.on('message:text', async (context) => {
+  const { user, chat } = context.state;
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
+  await messageModel.create({
+    data: {
+      chatId: chat.id,
+      text,
+      tgId: replyToMessageId.toString(),
+      userId: user.id,
+    },
+  });
+
   try {
     const message = `Echo: ${text}`;
-    await context.reply(message, { reply_to_message_id: replyToMessageId });
+    const botReply = await context.reply(message, {
+      reply_to_message_id: replyToMessageId,
+    });
+    await messageModel.create({
+      data: {
+        chatId: chat.id,
+        text: message,
+        tgId: botReply.message_id.toString(),
+        userId: 1,
+      },
+    });
   } catch (error) {
     await context.reply(replies.error);
     throw error;

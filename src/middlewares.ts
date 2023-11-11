@@ -1,4 +1,5 @@
-import { chat as chatRepo, user as userRepo } from '@/repositories';
+import { config } from './config';
+import { chatModel, userModel } from './database';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
 import { type NextFunction } from 'grammy';
@@ -26,8 +27,12 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await chatRepo.get(chatId.toString());
+  const chat = await chatModel.findUnique({
+    where: { tgId: chatId.toString() },
+  });
   if (chat) {
+    // eslint-disable-next-line require-atomic-updates
+    context.state.chat = chat;
     // eslint-disable-next-line node/callback-return
     await next();
     return;
@@ -35,11 +40,14 @@ export const chatMiddleware = async (
 
   const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
   const toCreate = {
-    id: chatId.toString(),
     name,
+    tgId: chatId.toString(),
     type: context.chat?.type,
   };
-  await chatRepo.create(toCreate);
+  const newChat = await chatModel.create({ data: toCreate });
+
+  // eslint-disable-next-line require-atomic-updates
+  context.state.chat = newChat;
 
   // eslint-disable-next-line node/callback-return
   await next();
@@ -58,7 +66,9 @@ export const userMiddleware = async (
 
   const { id: userId } = user;
 
-  const databaseUser = await userRepo.get(userId.toString());
+  const databaseUser = await userModel.findUnique({
+    where: { tgId: userId.toString() },
+  });
   if (databaseUser) {
     // eslint-disable-next-line require-atomic-updates
     context.state.user = databaseUser;
@@ -76,13 +86,13 @@ export const userMiddleware = async (
 
   const toCreate = {
     firstName: valueOrNull(firstName),
-    id: userId.toString(),
     language: valueOrNull(language),
     lastName: valueOrNull(lastName),
+    tgId: userId.toString(),
     username: valueOrNull(username),
   };
 
-  const newUser = await userRepo.create(toCreate);
+  const newUser = await userModel.create({ data: toCreate });
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
 
@@ -95,7 +105,7 @@ export const allowedUserMiddleware = async (
   next: NextFunction,
 ) => {
   const { isAllowed, username } = context.state.user;
-  const isAdmin = userRepo.checkIsAdmin(username ?? '');
+  const isAdmin = config.adminsUsernames.includes(username ?? '');
 
   const hasAccess = isAllowed || isAdmin;
 
