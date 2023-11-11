@@ -29,6 +29,7 @@
         "ignoreRegExpLiterals": true,
         "ignoreComments": true
       }
-    ]
+    ],
+    "canonical/filename-match-exported": "off"
   }
 }

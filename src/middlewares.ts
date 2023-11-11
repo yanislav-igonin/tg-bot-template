@@ -1,4 +1,4 @@
-import { config } from './config';
+import { config } from './config/app.config';
 import { chatModel, userModel } from './database';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';

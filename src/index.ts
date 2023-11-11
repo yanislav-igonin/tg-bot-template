@@ -1,4 +1,4 @@
-import { config } from '@/config';
+import { config } from 'config/app.config';
 import { database, messageModel } from '@/database';
 import { logger } from '@/logger';
 import {
