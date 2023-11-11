@@ -30,6 +30,7 @@
         "ignoreComments": true
       }
     ],
-    "canonical/filename-match-exported": "off"
+    "canonical/filename-match-exported": "off",
+    "@typescript-eslint/explicit-member-accessibility": "off"
   }
 }

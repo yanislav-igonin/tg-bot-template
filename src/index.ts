@@ -1,4 +1,4 @@
-import { config } from 'config/app.config';
+import 'reflect-metadata';
 import { database, messageModel } from '@/database';
 import { logger } from '@/logger';
 import {
@@ -8,6 +8,7 @@ import {
   userMiddleware,
 } from '@/middlewares';
 import { replies } from '@/replies';
+import { config } from 'config/app.config';
 import { type BotContext } from 'context';
 import { Bot } from 'grammy';
 
