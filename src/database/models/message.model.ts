@@ -14,10 +14,10 @@ export class Message extends BaseModel {
   @Property()
   text!: string;
 
-  @ManyToOne(() => User, { fieldName: 'userId' })
+  @ManyToOne()
   user!: User;
 
-  @ManyToOne(() => Chat, { fieldName: 'chatId' })
+  @ManyToOne()
   chat!: Chat;
 }
 

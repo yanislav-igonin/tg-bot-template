@@ -23,7 +23,7 @@ export class Chat extends BaseModel {
   @Enum(() => ChatType)
   type!: ChatType;
 
-  @OneToMany(() => Message, (message) => message.chatId)
+  @OneToMany(() => Message, (message) => message.chat)
   messages?: Message[];
 }
 

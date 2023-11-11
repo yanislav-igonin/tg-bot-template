@@ -24,7 +24,7 @@ export class User extends BaseModel {
   @Property({ default: false })
   isAllowed: boolean = false;
 
-  @OneToMany(() => Message, (message) => message.userId)
+  @OneToMany(() => Message, (message) => message.user)
   messages?: Message[];
 }
 

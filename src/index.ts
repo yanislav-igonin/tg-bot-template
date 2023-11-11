@@ -35,10 +35,10 @@ bot.on('message:text', async (context) => {
   const { message_id: replyToMessageId } = context.message;
 
   const message = MessageModel.create({
-    chatId: chat.id,
+    chat: chat.id,
     text,
     tgId: replyToMessageId.toString(),
-    userId: user.id,
+    user: user.id,
   });
   await connection.em.persistAndFlush(message);
 
@@ -48,10 +48,10 @@ bot.on('message:text', async (context) => {
       reply_to_message_id: replyToMessageId,
     });
     const replyMessage = MessageModel.create({
-      chatId: chat.id,
+      chat: chat.id,
       text: replyText,
       tgId: botReply.message_id.toString(),
-      userId: user.id,
+      user: user.id,
     });
     await connection.em.persistAndFlush(replyMessage);
   } catch (error) {
