@@ -1,11 +1,10 @@
-import { connection } from '..';
 import { BaseModel } from './base.model';
 // eslint-disable-next-line import/no-cycle
-import { Message } from './message.model';
+import { MessageModel } from './message.model';
 import { Entity, OneToMany, Property } from '@mikro-orm/core';
 
 @Entity({ tableName: 'users' })
-export class User extends BaseModel {
+export class UserModel extends BaseModel {
   @Property()
   tgId!: string;
 
@@ -24,8 +23,6 @@ export class User extends BaseModel {
   @Property({ default: false })
   isAllowed: boolean = false;
 
-  @OneToMany(() => Message, (message) => message.user)
-  messages?: Message[];
+  @OneToMany(() => MessageModel, (message) => message.user)
+  messages?: MessageModel[];
 }
-
-export const UserModel = connection.em.getRepository(User);

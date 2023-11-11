@@ -29,7 +29,9 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await ChatModel.findOne({ tgId: chatId.toString() });
+  const chat = await connection.em.findOne(ChatModel, {
+    tgId: chatId.toString(),
+  });
   if (chat) {
     // eslint-disable-next-line require-atomic-updates
     context.state.chat = chat;
@@ -39,7 +41,7 @@ export const chatMiddleware = async (
   }
 
   const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
-  const newChat = ChatModel.create({
+  const newChat = new ChatModel({
     name,
     tgId: chatId.toString(),
     type: context.chat?.type as ChatType,
