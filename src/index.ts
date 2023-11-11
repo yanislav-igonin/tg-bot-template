@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-unassigned-import
+import 'reflect-metadata';
 import { config } from '@/config';
 import { database } from '@/database';
 import { logger } from '@/logger';
