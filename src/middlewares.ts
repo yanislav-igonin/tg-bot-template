@@ -1,5 +1,7 @@
-import { config } from './config/app.config';
-import { chatModel, userModel } from './database';
+import { appConfig } from './config/app.config';
+import { connection } from './database';
+import { type ChatType } from './database/models';
+import { ChatModel, UserModel } from './database/models';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
 import { type NextFunction } from 'grammy';
@@ -27,9 +29,7 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await chatModel.findUnique({
-    where: { tgId: chatId.toString() },
-  });
+  const chat = await ChatModel.findOne({ tgId: chatId.toString() });
   if (chat) {
     // eslint-disable-next-line require-atomic-updates
     context.state.chat = chat;
@@ -39,12 +39,12 @@ export const chatMiddleware = async (
   }
 
   const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
-  const toCreate = {
+  const newChat = ChatModel.create({
     name,
     tgId: chatId.toString(),
-    type: context.chat?.type,
-  };
-  const newChat = await chatModel.create({ data: toCreate });
+    type: context.chat?.type as ChatType,
+  });
+  await connection.em.persistAndFlush(newChat);
 
   // eslint-disable-next-line require-atomic-updates
   context.state.chat = newChat;
@@ -66,9 +66,7 @@ export const userMiddleware = async (
 
   const { id: userId } = user;
 
-  const databaseUser = await userModel.findUnique({
-    where: { tgId: userId.toString() },
-  });
+  const databaseUser = await UserModel.findOne({ tgId: userId.toString() });
   if (databaseUser) {
     // eslint-disable-next-line require-atomic-updates
     context.state.user = databaseUser;
@@ -83,16 +81,15 @@ export const userMiddleware = async (
     last_name: lastName,
     username,
   } = user;
-
-  const toCreate = {
+  const newUser = UserModel.create({
     firstName: valueOrNull(firstName),
-    language: valueOrNull(language),
+    isAllowed: false,
+    languageCode: valueOrNull(language),
     lastName: valueOrNull(lastName),
     tgId: userId.toString(),
     username: valueOrNull(username),
-  };
-
-  const newUser = await userModel.create({ data: toCreate });
+  });
+  await connection.em.persistAndFlush(newUser);
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
 
@@ -105,7 +102,7 @@ export const allowedUserMiddleware = async (
   next: NextFunction,
 ) => {
   const { isAllowed, username } = context.state.user;
-  const isAdmin = config.adminsUsernames.includes(username ?? '');
+  const isAdmin = appConfig.adminsUsernames.includes(username ?? '');
 
   const hasAccess = isAllowed || isAdmin;
 

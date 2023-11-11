@@ -1,5 +1,7 @@
+// eslint-disable-next-line import/no-unassigned-import
 import 'reflect-metadata';
-import { database, messageModel } from '@/database';
+import { appConfig } from './config';
+import { connection } from './database';
 import { logger } from '@/logger';
 import {
   allowedUserMiddleware,
@@ -8,11 +10,11 @@ import {
   userMiddleware,
 } from '@/middlewares';
 import { replies } from '@/replies';
-import { config } from 'config/app.config';
 import { type BotContext } from 'context';
+import { MessageModel } from 'database/models';
 import { Bot } from 'grammy';
 
-const bot = new Bot<BotContext>(config.botToken);
+const bot = new Bot<BotContext>(appConfig.botToken);
 bot.catch(logger.error);
 bot.use(stateMiddleware);
 bot.use(userMiddleware);
@@ -32,28 +34,26 @@ bot.on('message:text', async (context) => {
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
-  await messageModel.create({
-    data: {
-      chatId: chat.id,
-      text,
-      tgId: replyToMessageId.toString(),
-      userId: user.id,
-    },
+  const message = MessageModel.create({
+    chatId: chat.id,
+    text,
+    tgId: replyToMessageId.toString(),
+    userId: user.id,
   });
+  await connection.em.persistAndFlush(message);
 
   try {
-    const message = `Echo: ${text}`;
-    const botReply = await context.reply(message, {
+    const replyText = `Echo: ${text}`;
+    const botReply = await context.reply(replyText, {
       reply_to_message_id: replyToMessageId,
     });
-    await messageModel.create({
-      data: {
-        chatId: chat.id,
-        text: message,
-        tgId: botReply.message_id.toString(),
-        userId: 1,
-      },
+    const replyMessage = MessageModel.create({
+      chatId: chat.id,
+      text: replyText,
+      tgId: botReply.message_id.toString(),
+      userId: user.id,
     });
+    await connection.em.persistAndFlush(replyMessage);
   } catch (error) {
     await context.reply(replies.error);
     throw error;
@@ -61,12 +61,12 @@ bot.on('message:text', async (context) => {
 });
 
 const start = async () => {
-  await database.$connect();
+  await connection.connect();
   logger.info('database connected');
   // eslint-disable-next-line promise/prefer-await-to-then
   bot.start().catch(async (error) => {
     logger.error(error);
-    await database.$disconnect();
+    await connection.close();
   });
 };
 

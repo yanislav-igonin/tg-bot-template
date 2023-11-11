@@ -1,21 +1,24 @@
+import { connection } from '..';
 import { BaseModel } from './base.model';
 // eslint-disable-next-line import/no-cycle
-import { ChatModel } from './chat.model';
+import { Chat } from './chat.model';
 // eslint-disable-next-line import/no-cycle
-import { UserModel } from './user.model';
+import { User } from './user.model';
 import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 
 @Entity({ tableName: 'messages' })
-export class MessageModel extends BaseModel {
+export class Message extends BaseModel {
   @Property()
   tgId!: string;
 
   @Property()
   text!: string;
 
-  @ManyToOne()
-  user!: UserModel;
+  @ManyToOne(() => User, { fieldName: 'userId' })
+  user!: User;
 
-  @ManyToOne()
-  chat!: ChatModel;
+  @ManyToOne(() => Chat, { fieldName: 'chatId' })
+  chat!: Chat;
 }
+
+export const MessageModel = connection.em.getRepository(Message);

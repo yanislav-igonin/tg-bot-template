@@ -1,4 +1,4 @@
-import { type Chat, type User } from '@/database';
+import { type Chat, type User } from 'database/models';
 import { type Context } from 'grammy';
 
 export type BotContext = Context & {
