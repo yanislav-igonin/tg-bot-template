@@ -4,6 +4,7 @@ const seeds = [initialSeed];
 
 const run = async () => {
   await database.initialize();
+
   for (const seed of seeds) {
     try {
       await seed.up();
