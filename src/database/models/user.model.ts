@@ -1,3 +1,4 @@
+import { connection } from '..';
 import { BaseModel } from './base.model';
 // eslint-disable-next-line import/no-cycle
 import { MessageModel } from './message.model';
@@ -12,13 +13,13 @@ export class UserModel extends BaseModel {
   username!: string | null;
 
   @Property({ nullable: true })
-  firstName?: string | null;
+  firstName!: string | null;
 
   @Property({ nullable: true })
-  lastName?: string | null;
+  lastName!: string | null;
 
-  @Property()
-  languageCode?: string | null;
+  @Property({ nullable: true })
+  languageCode!: string | null;
 
   @Property({ default: false })
   isAllowed: boolean = false;
@@ -26,3 +27,5 @@ export class UserModel extends BaseModel {
   @OneToMany(() => MessageModel, (message) => message.user)
   messages?: MessageModel[];
 }
+
+export const userRepo = connection.em.getRepository(UserModel);

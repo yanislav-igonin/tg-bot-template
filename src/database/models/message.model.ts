@@ -1,3 +1,4 @@
+import { connection } from '..';
 import { BaseModel } from './base.model';
 // eslint-disable-next-line import/no-cycle
 import { ChatModel } from './chat.model';
@@ -19,3 +20,5 @@ export class MessageModel extends BaseModel {
   @ManyToOne()
   chat!: ChatModel;
 }
+
+export const messageRepo = connection.em.getRepository(MessageModel);

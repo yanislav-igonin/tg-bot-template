@@ -1,7 +1,7 @@
+import { connection } from '..';
 import { BaseModel } from './base.model';
 // eslint-disable-next-line import/no-cycle
 import { MessageModel } from './message.model';
-// eslint-disable-next-line import/no-cycle
 import { Entity, Enum, OneToMany, Property } from '@mikro-orm/core';
 
 export enum ChatType {
@@ -25,3 +25,5 @@ export class ChatModel extends BaseModel {
   @OneToMany(() => MessageModel, (message) => message.chat)
   messages?: MessageModel[];
 }
+
+export const chatRepo = connection.em.getRepository(ChatModel);

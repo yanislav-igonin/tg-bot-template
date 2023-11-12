@@ -1,6 +1,6 @@
 import { appConfig } from './config/app.config';
 import { connection } from './database';
-import { type ChatType } from './database/models';
+import { chatRepo, type ChatType } from './database/models';
 import { ChatModel, UserModel } from './database/models';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
@@ -41,7 +41,7 @@ export const chatMiddleware = async (
   }
 
   const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
-  const newChat = new ChatModel({
+  const newChat = chatRepo.create({
     name,
     tgId: chatId.toString(),
     type: context.chat?.type as ChatType,
@@ -83,7 +83,8 @@ export const userMiddleware = async (
     last_name: lastName,
     username,
   } = user;
-  const newUser = UserModel.create({
+  const userRepo = connection.em.getRepository(UserModel);
+  const newUser = userRepo.create({
     firstName: valueOrNull(firstName),
     isAllowed: false,
     languageCode: valueOrNull(language),
@@ -92,6 +93,7 @@ export const userMiddleware = async (
     username: valueOrNull(username),
   });
   await connection.em.persistAndFlush(newUser);
+  newUser.lastName
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
 
