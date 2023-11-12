@@ -3,8 +3,8 @@ import { BaseModel } from './base.model';
 
 @Table({ tableName: 'users' })
 export class UserModel extends BaseModel {
-  @Column
-  tgId!: string | null;
+  @Column({ allowNull: false })
+  tgId!: string;
 
   @Column
   username!: string | null;
@@ -15,9 +15,9 @@ export class UserModel extends BaseModel {
   @Column
   lastName!: string | null;
 
-  @Column
-  language!: string | null;
+  @Column({ type: 'varchar(2)' })
+  languageCode!: string | null;
 
-  @Column
+  @Column({ allowNull: false })
   isAllowed: boolean = false;
 }
