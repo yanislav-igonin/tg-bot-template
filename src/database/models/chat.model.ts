@@ -1,17 +1,9 @@
-import { UserModel } from './user.model';
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { MessageModel } from './message.model';
 import { BaseModel } from './base.model';
+// eslint-disable-next-line import/no-cycle
+import { MessageModel } from './message.model';
+import { Column, Entity, OneToMany } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'chats' })
 export class ChatModel extends BaseModel {
   @Column()
   tgId!: string;

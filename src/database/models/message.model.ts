@@ -1,16 +1,11 @@
 import { BaseModel } from './base.model';
+// eslint-disable-next-line import/no-cycle
 import { ChatModel } from './chat.model';
+// eslint-disable-next-line import/no-cycle
 import { UserModel } from './user.model';
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'messages' })
 export class MessageModel extends BaseModel {
   @Column()
   text!: string;
@@ -18,6 +13,6 @@ export class MessageModel extends BaseModel {
   @ManyToOne(() => UserModel, (user) => user.messages)
   user!: UserModel;
 
-  @ManyToOne(()=>ChatModel, (chat) => chat.messages)
+  @ManyToOne(() => ChatModel, (chat) => chat.messages)
   chat!: ChatModel;
 }

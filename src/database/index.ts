@@ -1,6 +1,11 @@
-import databaseConfig from 'config/database.config';
 import { DataSource } from 'typeorm';
 
-// @ts-expect-error
-export default new DataSource(databaseConfig);
-
+export default new DataSource({
+  entities: ['src/database/models/*.model.ts'],
+  migrations: ['src/database/migrations/*.ts'],
+  password: 'postgres',
+  synchronize: true,
+  type: 'postgres',
+  // url: process.env.DATABASE_URL,
+  username: 'postgres',
+});

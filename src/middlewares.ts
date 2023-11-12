@@ -1,19 +1,25 @@
+import { config } from './config';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
 import { ChatModel, UserModel } from 'database/models';
 import { type NextFunction } from 'grammy';
 // eslint-disable-next-line import/extensions
 import { type Chat as TelegramChat } from 'grammy/out/types.node';
-import { config } from './config';
 
-export const stateMiddleware = async (context: BotContext, next: NextFunction) => {
+export const stateMiddleware = async (
+  context: BotContext,
+  next: NextFunction,
+) => {
   // @ts-expect-error Property user   is missing in type {} but required in type
   context.state = {};
   // eslint-disable-next-line node/callback-return
   await next();
 };
 
-export const chatMiddleware = async (context: BotContext, next: NextFunction) => {
+export const chatMiddleware = async (
+  context: BotContext,
+  next: NextFunction,
+) => {
   const chatId = context.chat?.id;
   if (!chatId) {
     // eslint-disable-next-line node/callback-return
@@ -30,8 +36,8 @@ export const chatMiddleware = async (context: BotContext, next: NextFunction) =>
 
   const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
   const toCreate = {
-    tgId: chatId.toString(),
     name,
+    tgId: chatId.toString(),
     type: context.chat?.type,
   };
   await ChatModel.create(toCreate).save();
@@ -40,7 +46,10 @@ export const chatMiddleware = async (context: BotContext, next: NextFunction) =>
   await next();
 };
 
-export const userMiddleware = async (context: BotContext, next: NextFunction) => {
+export const userMiddleware = async (
+  context: BotContext,
+  next: NextFunction,
+) => {
   const { from: user } = context;
   if (!user) {
     // eslint-disable-next-line node/callback-return
@@ -68,9 +77,9 @@ export const userMiddleware = async (context: BotContext, next: NextFunction) =>
 
   const newUser = await UserModel.create({
     firstName: valueOrNull(firstName),
-    tgId: userId.toString(),
     language: valueOrNull(language),
     lastName: valueOrNull(lastName),
+    tgId: userId.toString(),
     username: valueOrNull(username),
   }).save();
   // eslint-disable-next-line require-atomic-updates
@@ -82,7 +91,7 @@ export const userMiddleware = async (context: BotContext, next: NextFunction) =>
 
 export const allowedUserMiddleware = async (
   context: BotContext,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const { isAllowed, username } = context.state.user;
   const isAdmin = config.adminsUsernames.includes(username ?? '');

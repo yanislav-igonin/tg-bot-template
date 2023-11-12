@@ -31,9 +31,7 @@
       }
     ],
     "@typescript-eslint/explicit-member-accessibility": "off",
-    "canonical/filename-match-regex": [
-      "error",
-      "^[a-z0-9-]+(\\.[a-z0-9-]+)+$"
-    ]
+    "canonical/filename-match-regex": "off",
+    "unicorn/expiring-todo-comments": "off"
   }
 }

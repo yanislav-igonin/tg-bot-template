@@ -76,9 +76,7 @@ const main = async () => {
   const ormConfigPath = path.resolve(
     migrationsPath,
     '..',
-    '..',
-    'config',
-    'database.config.ts',
+    'index.ts',
   );
 
   const command = operationsClasses[operation];
