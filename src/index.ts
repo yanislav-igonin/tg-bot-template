@@ -1,6 +1,5 @@
 // eslint-disable-next-line import/no-unassigned-import
 import 'reflect-metadata';
-import { config } from '@/config';
 import { database } from '@/database';
 import { logger } from '@/logger';
 import {
@@ -10,10 +9,11 @@ import {
   userMiddleware,
 } from '@/middlewares';
 import { replies } from '@/replies';
+import { appConfig } from 'config/app.config';
 import { type BotContext } from 'context';
 import { Bot } from 'grammy';
 
-const bot = new Bot<BotContext>(config.botToken);
+const bot = new Bot<BotContext>(appConfig.botToken);
 bot.catch(logger.error);
 bot.use(stateMiddleware);
 bot.use(userMiddleware);
