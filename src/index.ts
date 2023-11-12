@@ -1,5 +1,5 @@
 import { config } from '@/config';
-import { database, messageModel } from '@/database';
+import { connection, models } from './database';
 import { logger } from '@/logger';
 import {
   allowedUserMiddleware,
@@ -31,27 +31,16 @@ bot.on('message:text', async (context) => {
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
-  await messageModel.create({
-    data: {
-      chatId: chat.id,
-      text,
-      tgId: replyToMessageId.toString(),
-      userId: user.id,
-    },
-  });
-
   try {
     const message = `Echo: ${text}`;
     const botReply = await context.reply(message, {
       reply_to_message_id: replyToMessageId,
     });
-    await messageModel.create({
-      data: {
-        chatId: chat.id,
-        text: message,
-        tgId: botReply.message_id.toString(),
-        userId: 1,
-      },
+    await models.Message.create({
+      chatId: chat.id,
+      text: message,
+      tgId: botReply.message_id.toString(),
+      userId: 1,
     });
   } catch (error) {
     await context.reply(replies.error);
@@ -60,12 +49,12 @@ bot.on('message:text', async (context) => {
 });
 
 const start = async () => {
-  await database.$connect();
+  await connection.authenticate();
   logger.info('database connected');
   // eslint-disable-next-line promise/prefer-await-to-then
   bot.start().catch(async (error) => {
     logger.error(error);
-    await database.$disconnect();
+    await connection.close();
   });
 };
 

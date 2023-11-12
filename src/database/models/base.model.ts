@@ -5,7 +5,7 @@ import {
   PrimaryKey,
 } from 'sequelize-typescript';
 
-export class BaseModel extends Model {
+export class Base<T1 extends {}, T2 extends {}> extends Model<T1, T2> {
   @PrimaryKey
   id!: string;
 

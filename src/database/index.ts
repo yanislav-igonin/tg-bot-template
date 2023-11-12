@@ -1,5 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
+export * as models from './models';
+
 export const connection = new Sequelize({
   database: process.env.DATABASE_NAME,
   dialect: 'postgres',

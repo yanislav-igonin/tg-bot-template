@@ -1,18 +1,32 @@
 import { Table, Column, ForeignKey } from 'sequelize-typescript';
-import { BaseModel } from './base.model';
-import { ChatModel } from './chat.model';
-import { UserModel } from './user.model';
+import { Base } from './base.model';
+import { Chat } from './chat.model';
+import { User } from './user.model';
+
+type MessageAttributes = {
+  id: number;
+  tgId: string;
+  chatId: number;
+  userId: number;
+  text: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+type MessageCreationAttributes = Omit<
+  MessageAttributes,
+  'id' | 'createdAt' | 'updatedAt'
+>;
 
 @Table({ tableName: 'users' })
-export class MessageModel extends BaseModel {
+export class Message extends Base<MessageAttributes, MessageCreationAttributes> {
   @Column
   tgId!: string;
 
-  @ForeignKey(() => ChatModel)
+  @ForeignKey(() => Chat)
   @Column
   chatId!: number;
 
-  @ForeignKey(() => UserModel)
+  @ForeignKey(() => User)
   @Column
   userId!: number;
 

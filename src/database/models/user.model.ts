@@ -1,8 +1,21 @@
 import { Table, Column, Model, HasMany } from 'sequelize-typescript';
-import { BaseModel } from './base.model';
+import { Base } from './base.model';
+
+type UserAttributes = {
+  id: number;
+  tgId: string;
+  username: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  languageCode: string | null;
+  isAllowed: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+type UserCreationAttributes = Omit<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({ tableName: 'users' })
-export class UserModel extends BaseModel {
+export class User extends Base<UserAttributes, UserCreationAttributes> {
   @Column({ allowNull: false })
   tgId!: string;
 
