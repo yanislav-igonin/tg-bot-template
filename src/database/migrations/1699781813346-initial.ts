@@ -19,6 +19,10 @@ export class Initial1699781813346 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "messages" ADD CONSTRAINT "FK_36bc604c820bb9adc4c75cd4115" FOREIGN KEY ("chatId") REFERENCES "chats"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
+
+    await queryRunner.query(
+      `INSERT INTO users (tgId, username, firstName, lastName) VALUES ('bot', 'bot', 'bot', 'bot')`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
