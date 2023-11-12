@@ -1,5 +1,4 @@
 import { appConfig } from './config/app.config';
-import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
 import { ChatModel, UserModel } from 'database/models';
 import { type NextFunction } from 'grammy';
@@ -76,11 +75,11 @@ export const userMiddleware = async (
   } = user;
 
   const newUser = await UserModel.create({
-    firstName: valueOrNull(firstName),
-    language: valueOrNull(language),
-    lastName: valueOrNull(lastName),
+    firstName,
+    language,
+    lastName,
     tgId: userId.toString(),
-    username: valueOrNull(username),
+    username,
   }).save();
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
