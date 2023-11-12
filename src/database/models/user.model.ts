@@ -20,8 +20,8 @@ export class UserModel extends BaseModel {
   @Column({ nullable: true, type: 'varchar' })
   language?: string;
 
-  @Column()
-  isAllowed!: boolean;
+  @Column({ default: false })
+  isAllowed?: boolean = false;
 
   @OneToMany(() => MessageModel, (message) => message.user)
   messages!: MessageModel[];

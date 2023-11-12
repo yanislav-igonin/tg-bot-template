@@ -1,11 +1,11 @@
 import { type MigrationInterface, type QueryRunner } from 'typeorm';
 
-export class Initial1699781813346 implements MigrationInterface {
-  name = 'Initial1699781813346';
+export class Initial1699782144756 implements MigrationInterface {
+  name = 'Initial1699782144756';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "users" ("id" SERIAL NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "tgId" character varying NOT NULL, "username" character varying, "firstName" character varying, "lastName" character varying, "language" character varying, "isAllowed" boolean NOT NULL, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
+      `CREATE TABLE "users" ("id" SERIAL NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "tgId" character varying NOT NULL, "username" character varying, "firstName" character varying, "lastName" character varying, "language" character varying, "isAllowed" boolean NOT NULL DEFAULT false, CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))`,
     );
     await queryRunner.query(
       `CREATE TABLE "messages" ("id" SERIAL NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "text" character varying NOT NULL, "userId" integer, "chatId" integer, CONSTRAINT "PK_18325f38ae6de43878487eff986" PRIMARY KEY ("id"))`,
@@ -21,7 +21,7 @@ export class Initial1699781813346 implements MigrationInterface {
     );
 
     await queryRunner.query(
-      `INSERT INTO users (tgId, username, firstName, lastName) VALUES ('bot', 'bot', 'bot', 'bot')`,
+      `INSERT INTO "users" ("tgId", "username", "firstName", "lastName") VALUES ('bot', 'bot', 'bot', 'bot')`,
     );
   }
 
