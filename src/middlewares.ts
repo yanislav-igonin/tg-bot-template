@@ -1,25 +1,20 @@
-import { config } from './config';
-import { chatModel, userModel } from './database';
+import { appConfig } from './config';
+import { database, operators } from './database';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
+import { chats } from 'database/schemas';
 import { type NextFunction } from 'grammy';
 // eslint-disable-next-line import/extensions
 import { type Chat as TelegramChat } from 'grammy/out/types.node';
 
-export const stateMiddleware = async (
-  context: BotContext,
-  next: NextFunction,
-) => {
+export const stateMiddleware = async (context: BotContext, next: NextFunction) => {
   // @ts-expect-error Property user   is missing in type {} but required in type
   context.state = {};
   // eslint-disable-next-line node/callback-return
   await next();
 };
 
-export const chatMiddleware = async (
-  context: BotContext,
-  next: NextFunction,
-) => {
+export const chatMiddleware = async (context: BotContext, next: NextFunction) => {
   const chatId = context.chat?.id;
   if (!chatId) {
     // eslint-disable-next-line node/callback-return
@@ -27,9 +22,11 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await chatModel.findUnique({
-    where: { tgId: chatId.toString() },
-  });
+  const chat = await database
+    .select()
+    .from(chats)
+    .where(operators.eq(chats.tgId, chatId.toString()))
+    .then((rows) => rows[0]);
   if (chat) {
     // eslint-disable-next-line require-atomic-updates
     context.state.chat = chat;
@@ -53,10 +50,7 @@ export const chatMiddleware = async (
   await next();
 };
 
-export const userMiddleware = async (
-  context: BotContext,
-  next: NextFunction,
-) => {
+export const userMiddleware = async (context: BotContext, next: NextFunction) => {
   const { from: user } = context;
   if (!user) {
     // eslint-disable-next-line node/callback-return
@@ -102,10 +96,10 @@ export const userMiddleware = async (
 
 export const allowedUserMiddleware = async (
   context: BotContext,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   const { isAllowed, username } = context.state.user;
-  const isAdmin = config.adminsUsernames.includes(username ?? '');
+  const isAdmin = appConfig.adminsUsernames.includes(username ?? '');
 
   const hasAccess = isAllowed || isAdmin;
 

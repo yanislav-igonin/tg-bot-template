@@ -23,6 +23,7 @@
   "devDependencies": {
     "@typescript-eslint/parser": "^5.55.0",
     "dotenv": "^16.0.3",
+    "drizzle-kit": "^0.20.2",
     "eslint": "^8.36.0",
     "eslint-config-canonical": "^40.0.9",
     "nodemon": "^2.0.21",
@@ -34,6 +35,8 @@
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
-    "grammy": "^1.15.3"
+    "drizzle-orm": "^0.29.0",
+    "grammy": "^1.15.3",
+    "postgres": "^3.4.3"
   }
 }
