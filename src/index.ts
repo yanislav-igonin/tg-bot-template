@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/no-unassigned-import
 import 'reflect-metadata';
-import { database } from '@/database';
+import database from './database';
 import { logger } from '@/logger';
 import {
   allowedUserMiddleware,
@@ -42,12 +42,12 @@ bot.on('message:text', async (context) => {
 });
 
 const start = async () => {
-  await database.$connect();
+  await database.initialize();
   logger.info('database connected');
   // eslint-disable-next-line promise/prefer-await-to-then
   bot.start().catch(async (error) => {
     logger.error(error);
-    await database.$disconnect();
+    await database.destroy();
   });
 };
 
