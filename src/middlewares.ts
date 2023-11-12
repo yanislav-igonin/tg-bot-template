@@ -26,14 +26,19 @@ export const chatMiddleware = async (
     return;
   }
 
+  const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
+
   const chat = await ChatModel.findOneBy({ tgId: chatId.toString() });
   if (chat) {
+    // Update chat info
+    chat.name = name;
+    await chat.save();
+
     // eslint-disable-next-line node/callback-return
     await next();
     return;
   }
 
-  const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
   const toCreate = {
     name,
     tgId: chatId.toString(),
@@ -56,23 +61,29 @@ export const userMiddleware = async (
     return;
   }
 
-  const { id: userId } = user;
+  const {
+    id: userId,
+    first_name: firstName,
+    language_code: language,
+    last_name: lastName,
+    username,
+  } = user;
 
   const databaseUser = await UserModel.findOneBy({ tgId: userId.toString() });
   if (databaseUser) {
+    // Update user info
+    databaseUser.firstName = firstName;
+    databaseUser.language = language;
+    databaseUser.lastName = lastName;
+    databaseUser.username = username;
+    await databaseUser.save();
+
     // eslint-disable-next-line require-atomic-updates
     context.state.user = databaseUser;
     // eslint-disable-next-line node/callback-return
     await next();
     return;
   }
-
-  const {
-    first_name: firstName,
-    language_code: language,
-    last_name: lastName,
-    username,
-  } = user;
 
   const newUser = await UserModel.create({
     firstName,
