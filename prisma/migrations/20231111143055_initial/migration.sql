@@ -49,3 +49,5 @@ ALTER TABLE "messages" ADD CONSTRAINT "messages_chatId_fkey" FOREIGN KEY ("chatI
 
 -- AddForeignKey
 ALTER TABLE "messages" ADD CONSTRAINT "messages_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+INSERT INTO "users" ("tgId", "username", "firstName", "lastName") VALUES ('1', 'bot', 'bot', 'bot');

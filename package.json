@@ -8,7 +8,9 @@
     "lint": "eslint --ext .ts src",
     "typecheck": "tsc --noEmit",
     "build": "tsc && tsc-alias",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "db:migrate:create": "prisma migrate dev",
+    "db:migrate:up": "prisma migrate deploy"
   },
   "repository": {
     "type": "git",
@@ -26,14 +28,14 @@
     "eslint": "^8.36.0",
     "eslint-config-canonical": "^40.0.9",
     "nodemon": "^2.0.21",
-    "prisma": "^4.11.0",
+    "prisma": "^5.5.2",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.3",
     "tsconfig-paths": "^4.1.2",
     "typescript": "^5.0.2"
   },
   "dependencies": {
-    "@prisma/client": "^4.11.0",
+    "@prisma/client": "^5.5.2",
     "grammy": "^1.15.3"
   }
 }
