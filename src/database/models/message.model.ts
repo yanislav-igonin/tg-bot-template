@@ -1,5 +1,4 @@
 import { Table, Column, ForeignKey, CreatedAt, PrimaryKey, UpdatedAt } from 'sequelize-typescript';
-import { Base } from './base.model';
 import { Chat } from './chat.model';
 import { User } from './user.model';
 import { Model } from 'sequelize';
