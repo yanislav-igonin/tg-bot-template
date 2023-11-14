@@ -34,7 +34,7 @@ bot.on('message:text', async (context) => {
   const { message_id: replyToMessageId } = context.message;
 
   await MessageModel.create({
-    chat: context.chat,
+    chat: context.state.chat,
     text,
     tgId: context.message.message_id.toString(),
     user: context.state.user,
@@ -47,7 +47,7 @@ bot.on('message:text', async (context) => {
     });
 
     await MessageModel.create({
-      chat: context.chat,
+      chat: context.state.chat,
       text: botMessage,
       tgId: botReply.message_id.toString(),
       user: context.state.user,

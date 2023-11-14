@@ -34,6 +34,9 @@ export const chatMiddleware = async (
     chat.name = name;
     await chat.save();
 
+    // eslint-disable-next-line require-atomic-updates
+    context.state.chat = chat;
+
     // eslint-disable-next-line node/callback-return
     await next();
     return;
@@ -44,7 +47,9 @@ export const chatMiddleware = async (
     tgId: chatId.toString(),
     type: context.chat?.type,
   };
-  await ChatModel.create(toCreate).save();
+  const newChat = await ChatModel.create(toCreate).save();
+  // eslint-disable-next-line require-atomic-updates
+  context.state.chat = newChat;
 
   // eslint-disable-next-line node/callback-return
   await next();
