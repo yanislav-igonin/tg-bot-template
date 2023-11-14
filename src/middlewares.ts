@@ -1,5 +1,5 @@
 import { appConfig } from './config/app.config';
-import { chatModel, userModel } from './database';
+import { database } from './database';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
 import { type NextFunction } from 'grammy';
@@ -27,9 +27,13 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await chatModel.findUnique({
-    where: { tgId: chatId.toString() },
-  });
+  // const chat = await chatModel.findUnique({
+  //   where: { tgId: chatId.toString() },
+  // });
+  const chat = await database
+    .selectFrom('chats')
+    .where('tgId', '=', chatId.toString())
+    .executeTakeFirst();
   if (chat) {
     // eslint-disable-next-line require-atomic-updates
     context.state.chat = chat;
@@ -44,7 +48,13 @@ export const chatMiddleware = async (
     tgId: chatId.toString(),
     type: context.chat?.type,
   };
-  const newChat = await chatModel.create({ data: toCreate });
+  // const newChat = await chatModel.create({ data: toCreate });
+  await database.insertInto('chats').values(toCreate).executeTakeFirst();
+
+  const newChat = await database
+    .selectFrom('chats')
+    .where('tgId', '=', chatId.toString())
+    .executeTakeFirst();
 
   // eslint-disable-next-line require-atomic-updates
   context.state.chat = newChat;

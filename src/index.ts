@@ -1,5 +1,4 @@
-import { appConfig } from 'config/app.config';
-import { database, messageModel } from '@/database';
+import { database } from './database';
 import { logger } from '@/logger';
 import {
   allowedUserMiddleware,
@@ -8,6 +7,7 @@ import {
   userMiddleware,
 } from '@/middlewares';
 import { replies } from '@/replies';
+import { appConfig } from 'config/app.config';
 import { type BotContext } from 'context';
 import { Bot } from 'grammy';
 
@@ -31,28 +31,28 @@ bot.on('message:text', async (context) => {
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
-  await messageModel.create({
-    data: {
-      chatId: chat.id,
-      text,
-      tgId: replyToMessageId.toString(),
-      userId: user.id,
-    },
-  });
+  // await messageModel.create({
+  //   data: {
+  //     chatId: chat.id,
+  //     text,
+  //     tgId: replyToMessageId.toString(),
+  //     userId: user.id,
+  //   },
+  // });
 
   try {
     const message = `Echo: ${text}`;
     const botReply = await context.reply(message, {
       reply_to_message_id: replyToMessageId,
     });
-    await messageModel.create({
-      data: {
-        chatId: chat.id,
-        text: message,
-        tgId: botReply.message_id.toString(),
-        userId: 1,
-      },
-    });
+    // await messageModel.create({
+    //   data: {
+    //     chatId: chat.id,
+    //     text: message,
+    //     tgId: botReply.message_id.toString(),
+    //     userId: 1,
+    //   },
+    // });
   } catch (error) {
     await context.reply(replies.error);
     throw error;
@@ -60,12 +60,12 @@ bot.on('message:text', async (context) => {
 });
 
 const start = async () => {
-  await database.$connect();
-  logger.info('database connected');
+  // await database.;
+  // logger.info('database connected');
   // eslint-disable-next-line promise/prefer-await-to-then
   bot.start().catch(async (error) => {
     logger.error(error);
-    await database.$disconnect();
+    await database.destroy();
   });
 };
 

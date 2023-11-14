@@ -17,7 +17,7 @@ export type Base = {
 export type ChatTable = Base & {
   name: string;
   tgId: string;
-  type: string;
+  type: 'channel' | 'group' | 'private' | 'supergroup';
 };
 export type Chat = Selectable<ChatTable>;
 export type NewChat = Insertable<ChatTable>;
@@ -25,7 +25,7 @@ export type ChatUpdate = Updateable<ChatTable>;
 
 export type MessageTable = Base & {
   chatId: number;
-  text: string;
+  text: string | null;
   /**
    * Not unique because in different chats can be messages with same id
    */
