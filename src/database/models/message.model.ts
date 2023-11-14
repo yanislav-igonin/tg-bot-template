@@ -7,12 +7,15 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity({ name: 'messages' })
 export class MessageModel extends BaseModel {
-  @Column()
+  @Column({ type: 'text' })
   text!: string;
 
+  @Column()
+  tgId!: string;
+
   @ManyToOne(() => UserModel, (user) => user.messages)
-  user!: UserModel;
+  userId!: UserModel;
 
   @ManyToOne(() => ChatModel, (chat) => chat.messages)
-  chat!: ChatModel;
+  chatId!: ChatModel;
 }

@@ -11,6 +11,7 @@ import {
 import { replies } from '@/replies';
 import { appConfig } from 'config/app.config';
 import { type BotContext } from 'context';
+import { MessageModel } from 'database/models';
 import { Bot } from 'grammy';
 
 const bot = new Bot<BotContext>(appConfig.botToken);
@@ -32,9 +33,25 @@ bot.on('message:text', async (context) => {
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
+  await MessageModel.create({
+    chatId: context.chat,
+    text,
+    tgId: context.message.message_id.toString(),
+    userId: context.state.user,
+  }).save();
+
   try {
-    const message = `Echo: ${text}`;
-    await context.reply(message, { reply_to_message_id: replyToMessageId });
+    const botMessage = `Echo: ${text}`;
+    const botReply = await context.reply(botMessage, {
+      reply_to_message_id: replyToMessageId,
+    });
+
+    await MessageModel.create({
+      chatId: context.chat,
+      text: botMessage,
+      tgId: botReply.message_id.toString(),
+      userId: context.state.user,
+    }).save();
   } catch (error) {
     await context.reply(replies.error);
     throw error;

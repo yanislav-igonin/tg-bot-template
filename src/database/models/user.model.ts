@@ -23,6 +23,6 @@ export class UserModel extends BaseModel {
   @Column({ default: false })
   isAllowed?: boolean = false;
 
-  @OneToMany(() => MessageModel, (message) => message.user)
+  @OneToMany(() => MessageModel, (message) => message.userId)
   messages!: MessageModel[];
 }
