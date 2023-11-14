@@ -1,6 +1,6 @@
 import { appConfig } from './config/app.config';
 import { connection } from './database';
-import { chatRepo, type ChatType } from './database/models';
+import { chatRepo, userRepo, type ChatType } from './database/models';
 import { ChatModel, UserModel } from './database/models';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
@@ -68,7 +68,7 @@ export const userMiddleware = async (
 
   const { id: userId } = user;
 
-  const databaseUser = await UserModel.findOne({ tgId: userId.toString() });
+  const databaseUser = await userRepo.findOne({ tgId: userId.toString() });
   if (databaseUser) {
     // eslint-disable-next-line require-atomic-updates
     context.state.user = databaseUser;
@@ -83,7 +83,6 @@ export const userMiddleware = async (
     last_name: lastName,
     username,
   } = user;
-  const userRepo = connection.em.getRepository(UserModel);
   const newUser = userRepo.create({
     firstName: valueOrNull(firstName),
     isAllowed: false,
@@ -91,9 +90,9 @@ export const userMiddleware = async (
     lastName: valueOrNull(lastName),
     tgId: userId.toString(),
     username: valueOrNull(username),
-  });
+  }, {managed: true});
   await connection.em.persistAndFlush(newUser);
-  newUser.lastName
+  newUser.
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
 
