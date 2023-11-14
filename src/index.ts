@@ -34,10 +34,10 @@ bot.on('message:text', async (context) => {
   const { message_id: replyToMessageId } = context.message;
 
   await MessageModel.create({
-    chatId: context.chat,
+    chat: context.chat,
     text,
     tgId: context.message.message_id.toString(),
-    userId: context.state.user,
+    user: context.state.user,
   }).save();
 
   try {
@@ -47,10 +47,10 @@ bot.on('message:text', async (context) => {
     });
 
     await MessageModel.create({
-      chatId: context.chat,
+      chat: context.chat,
       text: botMessage,
       tgId: botReply.message_id.toString(),
-      userId: context.state.user,
+      user: context.state.user,
     }).save();
   } catch (error) {
     await context.reply(replies.error);

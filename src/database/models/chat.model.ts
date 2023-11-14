@@ -11,6 +11,6 @@ export class ChatModel extends BaseModel {
   @Column()
   name!: string;
 
-  @OneToMany(() => MessageModel, (message) => message.chatId)
+  @OneToMany(() => MessageModel, (message) => message.chat)
   messages!: MessageModel[];
 }

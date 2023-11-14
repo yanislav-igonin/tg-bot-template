@@ -14,8 +14,8 @@ export class MessageModel extends BaseModel {
   tgId!: string;
 
   @ManyToOne(() => UserModel, (user) => user.messages)
-  userId!: UserModel;
+  user!: UserModel;
 
   @ManyToOne(() => ChatModel, (chat) => chat.messages)
-  chatId!: ChatModel;
+  chat!: ChatModel;
 }
