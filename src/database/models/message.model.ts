@@ -13,8 +13,14 @@ export class MessageModel extends BaseModel {
   @Column()
   tgId!: string;
 
+  @Column()
+  userId!: string;
+
   @ManyToOne(() => UserModel, (user) => user.messages)
   user!: UserModel;
+
+  @Column()
+  chatId!: string;
 
   @ManyToOne(() => ChatModel, (chat) => chat.messages)
   chat!: ChatModel;
