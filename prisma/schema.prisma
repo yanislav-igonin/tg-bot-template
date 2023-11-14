@@ -2,7 +2,14 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-kysely"
+
+    // Optionally provide a destination directory for the generated file
+    // and a filename of your choice
+    output = "../src/db"
+    fileName = "types.ts"
+    // Optionally generate runtime enums to a separate file
+     enumFileName = "enums.ts"
 }
 
 datasource db {

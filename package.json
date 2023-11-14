@@ -36,6 +36,8 @@
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",
-    "grammy": "^1.15.3"
+    "grammy": "^1.15.3",
+    "kysely": "^0.26.3",
+    "pg": "^8.11.3"
   }
 }

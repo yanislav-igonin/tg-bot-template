@@ -1,4 +1,4 @@
-import { config } from '@/config';
+import { appConfig } from 'config/app.config';
 import { database, messageModel } from '@/database';
 import { logger } from '@/logger';
 import {
@@ -11,7 +11,7 @@ import { replies } from '@/replies';
 import { type BotContext } from 'context';
 import { Bot } from 'grammy';
 
-const bot = new Bot<BotContext>(config.botToken);
+const bot = new Bot<BotContext>(appConfig.botToken);
 bot.catch(logger.error);
 bot.use(stateMiddleware);
 bot.use(userMiddleware);
