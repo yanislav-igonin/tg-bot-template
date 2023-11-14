@@ -33,6 +33,7 @@ export const chatMiddleware = async (
   const chat = await database
     .selectFrom('chats')
     .where('tgId', '=', chatId.toString())
+    .selectAll()
     .executeTakeFirst();
   if (chat) {
     // eslint-disable-next-line require-atomic-updates
@@ -49,12 +50,14 @@ export const chatMiddleware = async (
     type: context.chat?.type,
   };
   // const newChat = await chatModel.create({ data: toCreate });
-  await database.insertInto('chats').values(toCreate).executeTakeFirst();
-
   const newChat = await database
-    .selectFrom('chats')
-    .where('tgId', '=', chatId.toString())
+    .insertInto('chats')
+    .values(toCreate)
+    .returningAll()
     .executeTakeFirst();
+  if (!newChat) {
+    throw new Error('chat not created, something fucked up');
+  }
 
   // eslint-disable-next-line require-atomic-updates
   context.state.chat = newChat;
@@ -67,21 +70,23 @@ export const userMiddleware = async (
   context: BotContext,
   next: NextFunction,
 ) => {
-  const { from: user } = context;
-  if (!user) {
+  const { from: tgUser } = context;
+  if (!tgUser) {
     // eslint-disable-next-line node/callback-return
     await next();
     return;
   }
 
-  const { id: userId } = user;
+  const { id: tgUserId } = tgUser;
 
-  const databaseUser = await userModel.findUnique({
-    where: { tgId: userId.toString() },
-  });
-  if (databaseUser) {
+  const user = await database
+    .selectFrom('users')
+    .selectAll()
+    .where('tgId', '=', tgUserId.toString())
+    .executeTakeFirst();
+  if (user) {
     // eslint-disable-next-line require-atomic-updates
-    context.state.user = databaseUser;
+    context.state.user = user;
     // eslint-disable-next-line node/callback-return
     await next();
     return;
@@ -92,17 +97,25 @@ export const userMiddleware = async (
     language_code: language,
     last_name: lastName,
     username,
-  } = user;
+  } = tgUser;
 
   const toCreate = {
     firstName: valueOrNull(firstName),
     language: valueOrNull(language),
     lastName: valueOrNull(lastName),
-    tgId: userId.toString(),
+    tgId: tgUserId.toString(),
     username: valueOrNull(username),
   };
 
-  const newUser = await userModel.create({ data: toCreate });
+  const newUser = await database
+    .insertInto('users')
+    .values(toCreate)
+    .returningAll()
+    .executeTakeFirst();
+  if (!newUser) {
+    throw new Error('user not created, something fucked up');
+  }
+
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
 

@@ -31,28 +31,31 @@ bot.on('message:text', async (context) => {
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
-  // await messageModel.create({
-  //   data: {
-  //     chatId: chat.id,
-  //     text,
-  //     tgId: replyToMessageId.toString(),
-  //     userId: user.id,
-  //   },
-  // });
+  await database
+    .insertInto('messages')
+    .values({
+      chatId: chat.id,
+      text,
+      tgId: replyToMessageId.toString(),
+      userId: user.id,
+    })
+    .executeTakeFirst();
 
   try {
     const message = `Echo: ${text}`;
     const botReply = await context.reply(message, {
       reply_to_message_id: replyToMessageId,
     });
-    // await messageModel.create({
-    //   data: {
-    //     chatId: chat.id,
-    //     text: message,
-    //     tgId: botReply.message_id.toString(),
-    //     userId: 1,
-    //   },
-    // });
+
+    await database
+      .insertInto('messages')
+      .values({
+        chatId: chat.id,
+        text: message,
+        tgId: botReply.message_id.toString(),
+        userId: 1,
+      })
+      .executeTakeFirst();
   } catch (error) {
     await context.reply(replies.error);
     throw error;
