@@ -10,7 +10,8 @@
     "build": "tsc && tsc-alias",
     "start": "node dist/index.js",
     "db:migrate:create": "mikro-orm migration:create",
-    "db:migrate:up": "mikro-orm migration:up"
+    "db:migrate:up": "mikro-orm migration:up",
+    "db:migrate:down": "mikro-orm migration:down"
   },
   "repository": {
     "type": "git",
