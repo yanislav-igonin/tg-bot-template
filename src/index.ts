@@ -11,6 +11,7 @@ import {
 } from '@/middlewares';
 import { replies } from '@/replies';
 import { type BotContext } from 'context';
+import { textController } from 'controllers';
 import { Bot } from 'grammy';
 
 const bot = new Bot<BotContext>(appConfig.botToken);
@@ -28,36 +29,7 @@ bot.command('help', async (context) => {
   await context.reply(replies.help);
 });
 
-bot.on('message:text', async (context) => {
-  const { user, chat } = context.state;
-  const text = context.message.text;
-  const { message_id: replyToMessageId } = context.message;
-
-  const message = context.repositories.message.create({
-    chat: chat.id,
-    text,
-    tgId: replyToMessageId.toString(),
-    user: user.id,
-  });
-  await context.repositories.save(message);
-
-  try {
-    const replyText = `Echo: ${text}`;
-    const botReply = await context.reply(replyText, {
-      reply_to_message_id: replyToMessageId,
-    });
-    const replyMessage = context.repositories.message.create({
-      chat: chat.id,
-      text: replyText,
-      tgId: botReply.message_id.toString(),
-      user: 1,
-    });
-    await context.repositories.save(replyMessage);
-  } catch (error) {
-    await context.reply(replies.error);
-    throw error;
-  }
-});
+bot.on('message:text', textController);
 
 const start = async () => {
   await database.connect();
