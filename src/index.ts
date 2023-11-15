@@ -2,7 +2,6 @@
 import 'reflect-metadata';
 import { appConfig } from './config';
 import * as database from './database';
-import { repositories } from './database';
 import { logger } from '@/logger';
 import {
   allowedUserMiddleware,
@@ -34,26 +33,26 @@ bot.on('message:text', async (context) => {
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
-  const message = repositories.message.create({
+  const message = context.repositories.message.create({
     chat: chat.id,
     text,
     tgId: replyToMessageId.toString(),
     user: user.id,
   });
-  await database.save(message);
+  await context.repositories.save(message);
 
   try {
     const replyText = `Echo: ${text}`;
     const botReply = await context.reply(replyText, {
       reply_to_message_id: replyToMessageId,
     });
-    const replyMessage = repositories.message.create({
+    const replyMessage = context.repositories.message.create({
       chat: chat.id,
       text: replyText,
       tgId: botReply.message_id.toString(),
       user: 1,
     });
-    await database.save(replyMessage);
+    await context.repositories.save(replyMessage);
   } catch (error) {
     await context.reply(replies.error);
     throw error;
