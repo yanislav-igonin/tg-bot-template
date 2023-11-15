@@ -1,4 +1,3 @@
-import { connection } from '..';
 import { BaseModel } from './base.model';
 // eslint-disable-next-line import/no-cycle
 import { ChatModel } from './chat.model';
@@ -8,17 +7,15 @@ import { Entity, ManyToOne, Property } from '@mikro-orm/core';
 
 @Entity({ tableName: 'messages' })
 export class MessageModel extends BaseModel {
-  @Property()
+  @Property({ type: 'varchar' })
   tgId!: string;
 
-  @Property()
-  text!: string;
+  @Property({ type: 'text' })
+  text?: string;
 
-  @ManyToOne()
+  @ManyToOne(() => UserModel)
   user!: UserModel;
 
-  @ManyToOne()
+  @ManyToOne(() => ChatModel)
   chat!: ChatModel;
 }
-
-export const messageRepo = connection.em.getRepository(MessageModel);

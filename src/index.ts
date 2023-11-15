@@ -1,7 +1,8 @@
 // eslint-disable-next-line import/no-unassigned-import
 import 'reflect-metadata';
 import { appConfig } from './config';
-import { connection } from './database';
+import * as database from './database';
+import { repositories } from './database';
 import { logger } from '@/logger';
 import {
   allowedUserMiddleware,
@@ -11,7 +12,6 @@ import {
 } from '@/middlewares';
 import { replies } from '@/replies';
 import { type BotContext } from 'context';
-import { MessageModel } from 'database/models';
 import { Bot } from 'grammy';
 
 const bot = new Bot<BotContext>(appConfig.botToken);
@@ -34,26 +34,26 @@ bot.on('message:text', async (context) => {
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
-  const message = MessageModel.create({
+  const message = repositories.message.create({
     chat: chat.id,
     text,
     tgId: replyToMessageId.toString(),
     user: user.id,
   });
-  await connection.em.persistAndFlush(message);
+  await database.save(message);
 
   try {
     const replyText = `Echo: ${text}`;
     const botReply = await context.reply(replyText, {
       reply_to_message_id: replyToMessageId,
     });
-    const replyMessage = MessageModel.create({
+    const replyMessage = repositories.message.create({
       chat: chat.id,
       text: replyText,
       tgId: botReply.message_id.toString(),
-      user: user.id,
+      user: 1,
     });
-    await connection.em.persistAndFlush(replyMessage);
+    await database.save(replyMessage);
   } catch (error) {
     await context.reply(replies.error);
     throw error;
@@ -61,12 +61,12 @@ bot.on('message:text', async (context) => {
 });
 
 const start = async () => {
-  await connection.connect();
+  await database.connect();
   logger.info('database connected');
   // eslint-disable-next-line promise/prefer-await-to-then
   bot.start().catch(async (error) => {
     logger.error(error);
-    await connection.close();
+    await database.close();
   });
 };
 

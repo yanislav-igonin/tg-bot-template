@@ -1,7 +1,6 @@
 import { appConfig } from './config/app.config';
-import { connection } from './database';
-import { chatRepo, userRepo, type ChatType } from './database/models';
-import { ChatModel, UserModel } from './database/models';
+import { connection, repositories } from './database';
+import { type ChatType } from './database/models';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
 import { type NextFunction } from 'grammy';
@@ -29,7 +28,7 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await connection.em.findOne(ChatModel, {
+  const chat = await repositories.chat.findOne({
     tgId: chatId.toString(),
   });
   if (chat) {
@@ -41,7 +40,7 @@ export const chatMiddleware = async (
   }
 
   const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
-  const newChat = chatRepo.create({
+  const newChat = repositories.chat.create({
     name,
     tgId: chatId.toString(),
     type: context.chat?.type as ChatType,
@@ -68,7 +67,9 @@ export const userMiddleware = async (
 
   const { id: userId } = user;
 
-  const databaseUser = await userRepo.findOne({ tgId: userId.toString() });
+  const databaseUser = await repositories.user.findOne({
+    tgId: userId.toString(),
+  });
   if (databaseUser) {
     // eslint-disable-next-line require-atomic-updates
     context.state.user = databaseUser;
@@ -83,16 +84,18 @@ export const userMiddleware = async (
     last_name: lastName,
     username,
   } = user;
-  const newUser = userRepo.create({
-    firstName: valueOrNull(firstName),
-    isAllowed: false,
-    languageCode: valueOrNull(language),
-    lastName: valueOrNull(lastName),
-    tgId: userId.toString(),
-    username: valueOrNull(username),
-  }, {managed: true});
+  const newUser = repositories.user.create(
+    {
+      firstName: valueOrNull(firstName),
+      isAllowed: false,
+      languageCode: valueOrNull(language),
+      lastName: valueOrNull(lastName),
+      tgId: userId.toString(),
+      username: valueOrNull(username),
+    },
+    { managed: true },
+  );
   await connection.em.persistAndFlush(newUser);
-  newUser.
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
 

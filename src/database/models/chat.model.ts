@@ -1,4 +1,3 @@
-import { connection } from '..';
 import { BaseModel } from './base.model';
 // eslint-disable-next-line import/no-cycle
 import { MessageModel } from './message.model';
@@ -13,10 +12,10 @@ export enum ChatType {
 
 @Entity({ tableName: 'chats' })
 export class ChatModel extends BaseModel {
-  @Property()
+  @Property({ type: 'varchar', unique: true })
   tgId!: string;
 
-  @Property()
+  @Property({ nullable: false, type: 'varchar' })
   name!: string;
 
   @Enum(() => ChatType)
@@ -25,5 +24,3 @@ export class ChatModel extends BaseModel {
   @OneToMany(() => MessageModel, (message) => message.chat)
   messages?: MessageModel[];
 }
-
-export const chatRepo = connection.em.getRepository(ChatModel);
