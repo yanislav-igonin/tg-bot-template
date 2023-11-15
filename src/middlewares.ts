@@ -29,9 +29,12 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await context.repositories.chat.findOne({
-    tgId: chatId.toString(),
-  });
+  const chat = await context.repositories.chat.findOne(
+    {
+      tgId: chatId.toString(),
+    },
+    { populate: ['messages'] },
+  );
   if (chat) {
     // eslint-disable-next-line require-atomic-updates
     context.state.chat = chat;

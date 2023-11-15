@@ -1,6 +1,6 @@
 import { ChatModel, MessageModel, UserModel } from './models';
 import { databaseConfig } from '@/config';
-import { MikroORM } from '@mikro-orm/core';
+import { LoadStrategy, MikroORM } from '@mikro-orm/core';
 import {
   type EntityManager,
   type PostgreSqlDriver,
@@ -10,7 +10,11 @@ import {
 let connection: MikroORM<PostgreSqlDriver>;
 
 export const connect = async () => {
-  connection = await MikroORM.init<PostgreSqlDriver>(databaseConfig);
+  connection = await MikroORM.init<PostgreSqlDriver>({
+    ...databaseConfig,
+    debug: true,
+    loadStrategy: LoadStrategy.JOINED,
+  });
 };
 
 export const close = async () => {
