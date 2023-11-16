@@ -6,9 +6,6 @@ export const appConfig = {
   botToken: valueOrDefault(process.env.BOT_TOKEN, ''),
   env: valueOrDefault(process.env.ENV, 'development'),
 };
-export const databaseConfig = {
-  url: valueOrDefault(process.env.DATABASE_URL, ''),
-};
 /* eslint-enable node/no-process-env */
 
 export const isProduction = () => appConfig.env === 'production';
