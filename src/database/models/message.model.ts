@@ -1,27 +1,27 @@
-import { Table, Column, ForeignKey, CreatedAt, PrimaryKey, UpdatedAt } from 'sequelize-typescript';
+import { Base } from './base.model';
 import { Chat } from './chat.model';
 import { User } from './user.model';
-import { Model } from 'sequelize';
+import { Column, ForeignKey, Table } from 'sequelize-typescript';
 
 type MessageAttributes = {
-  id: number;
-  tgId: string;
   chatId: number;
-  userId: number;
-  text: string | null;
   createdAt: Date;
+  id: number;
+  text: string | null;
+  tgId: string;
   updatedAt: Date;
+  userId: number;
 };
 type MessageCreationAttributes = Omit<
   MessageAttributes,
-  'id' | 'createdAt' | 'updatedAt'
+  'createdAt' | 'id' | 'updatedAt'
 >;
 
 @Table({ tableName: 'users' })
-export class Message extends Model<MessageAttributes, MessageCreationAttributes> {
-  @PrimaryKey
-  id!: string;
-  
+export class Message extends Base<
+  MessageAttributes,
+  MessageCreationAttributes
+> {
   @Column
   tgId!: string;
 
@@ -35,10 +35,4 @@ export class Message extends Model<MessageAttributes, MessageCreationAttributes>
 
   @Column
   text!: string | null;
-
-  @CreatedAt
-  createdAt!: Date;
-
-  @UpdatedAt
-  updatedAt!: Date;
 }

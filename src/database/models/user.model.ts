@@ -1,18 +1,21 @@
-import { Table, Column, Model, HasMany } from 'sequelize-typescript';
 import { Base } from './base.model';
+import { Column, Table } from 'sequelize-typescript';
 
 type UserAttributes = {
-  id: number;
-  tgId: string;
-  username: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  languageCode: string | null;
-  isAllowed: boolean;
   createdAt: Date;
+  firstName: string | null;
+  id: number;
+  isAllowed: boolean;
+  languageCode: string | null;
+  lastName: string | null;
+  tgId: string;
   updatedAt: Date;
+  username: string | null;
 };
-type UserCreationAttributes = Omit<UserAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+type UserCreationAttributes = Omit<
+  UserAttributes,
+  'createdAt' | 'id' | 'updatedAt'
+>;
 
 @Table({ tableName: 'users' })
 export class User extends Base<UserAttributes, UserCreationAttributes> {

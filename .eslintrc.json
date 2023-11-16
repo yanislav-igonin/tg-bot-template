@@ -29,6 +29,7 @@
         "ignoreRegExpLiterals": true,
         "ignoreComments": true
       }
-    ]
+    ],
+    "@typescript-eslint/explicit-member-accessibility": "off"
   }
 }

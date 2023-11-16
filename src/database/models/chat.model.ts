@@ -1,15 +1,24 @@
-import { Table, Column, Model, HasMany } from 'sequelize-typescript';
 import { Base } from './base.model';
+import { Column, Table } from 'sequelize-typescript';
 
+enum ChatType {
+  Channel = 'channel',
+  Group = 'group',
+  Private = 'private',
+  Supergroup = 'supergroup',
+}
 type ChatAttributes = {
-  id: number;
-  tgId: string;
-  name: string;
-  type: string;
   createdAt: Date;
+  id: number;
+  name: string;
+  tgId: string;
+  type: ChatType;
   updatedAt: Date;
 };
-type ChatCreationAttributes = Omit<ChatAttributes, 'id' | 'createdAt' | 'updatedAt'>;
+type ChatCreationAttributes = Omit<
+  ChatAttributes,
+  'createdAt' | 'id' | 'updatedAt'
+>;
 
 @Table({ tableName: 'users' })
 export class Chat extends Base<ChatAttributes, ChatCreationAttributes> {
@@ -20,5 +29,5 @@ export class Chat extends Base<ChatAttributes, ChatCreationAttributes> {
   name!: string;
 
   @Column({ allowNull: false })
-  type!: string;
+  type!: ChatType;
 }
