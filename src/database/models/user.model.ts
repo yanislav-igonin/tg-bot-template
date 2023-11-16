@@ -1,5 +1,12 @@
 import { Base } from './base.model';
-import { Column, Table } from 'sequelize-typescript';
+import {
+  AllowNull,
+  Column,
+  DataType,
+  Default,
+  Table,
+  Unique,
+} from 'sequelize-typescript';
 
 type UserAttributes = {
   createdAt: Date;
@@ -19,21 +26,25 @@ type UserCreationAttributes = Omit<
 
 @Table({ tableName: 'users' })
 export class User extends Base<UserAttributes, UserCreationAttributes> {
-  @Column({ allowNull: false })
+  @AllowNull(false)
+  @Unique
+  @Column
   tgId!: string;
 
-  @Column
+  @Column(DataType.STRING)
   username!: string | null;
 
-  @Column
+  @Column(DataType.STRING)
   firstName!: string | null;
 
-  @Column
+  @Column(DataType.STRING)
   lastName!: string | null;
 
-  @Column({ type: 'varchar(2)' })
+  @Column(DataType.STRING(2))
   languageCode!: string | null;
 
-  @Column({ allowNull: false, defaultValue: false })
+  @AllowNull(false)
+  @Default(false)
+  @Column
   isAllowed!: boolean;
 }

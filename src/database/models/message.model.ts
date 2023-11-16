@@ -1,7 +1,14 @@
 import { Base } from './base.model';
 import { Chat } from './chat.model';
 import { User } from './user.model';
-import { Column, ForeignKey, Table } from 'sequelize-typescript';
+import {
+  AllowNull,
+  Column,
+  DataType,
+  ForeignKey,
+  Table,
+  Unique,
+} from 'sequelize-typescript';
 
 type MessageAttributes = {
   chatId: number;
@@ -22,17 +29,21 @@ export class Message extends Base<
   MessageAttributes,
   MessageCreationAttributes
 > {
+  @AllowNull(false)
+  @Unique
   @Column
   tgId!: string;
 
   @ForeignKey(() => Chat)
+  @AllowNull(false)
   @Column
   chatId!: number;
 
   @ForeignKey(() => User)
+  @AllowNull(false)
   @Column
   userId!: number;
 
-  @Column
+  @Column(DataType.TEXT)
   text!: string | null;
 }

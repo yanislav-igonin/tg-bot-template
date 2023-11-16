@@ -30,6 +30,7 @@
         "ignoreComments": true
       }
     ],
-    "@typescript-eslint/explicit-member-accessibility": "off"
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "canonical/filename-match-regex": "off"
   }
 }

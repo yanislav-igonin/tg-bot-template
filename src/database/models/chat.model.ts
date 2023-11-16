@@ -1,5 +1,11 @@
 import { Base } from './base.model';
-import { Column, Table } from 'sequelize-typescript';
+import {
+  AllowNull,
+  Column,
+  DataType,
+  Table,
+  Unique,
+} from 'sequelize-typescript';
 
 export enum ChatType {
   Channel = 'channel',
@@ -22,12 +28,14 @@ type ChatCreationAttributes = Omit<
 
 @Table({ tableName: 'users' })
 export class Chat extends Base<ChatAttributes, ChatCreationAttributes> {
-  @Column({ allowNull: false })
+  @AllowNull(false)
+  @Unique
+  @Column
   tgId!: string;
 
-  @Column({ allowNull: false })
+  @Column
   name!: string;
 
-  @Column({ allowNull: false })
+  @Column(DataType.ENUM(...Object.values(ChatType)))
   type!: ChatType;
 }
