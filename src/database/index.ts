@@ -1,14 +1,9 @@
+import { databaseConfig } from '@/config';
 import { Sequelize } from 'sequelize-typescript';
 
 export * as models from './models';
 
-export const connection = new Sequelize({
-  database: process.env.DATABASE_NAME,
-  dialect: 'postgres',
-  username: process.env.DATABASE_USERNAME,
-  password: process.env.DATABASE_PASSWORD,
-  models: [__dirname + '/models'],
-});
+export const connection = new Sequelize(databaseConfig.url, databaseConfig);
 
-// @ts-expect-error
+// @ts-expect-error Sequelize have Op type
 export const operators = Sequelize.Op;

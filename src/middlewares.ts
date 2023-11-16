@@ -1,4 +1,4 @@
-import { config } from './config';
+import { appConfig } from './config/app.config';
 import { chatModel, userModel } from './database';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
@@ -105,7 +105,7 @@ export const allowedUserMiddleware = async (
   next: NextFunction,
 ) => {
   const { isAllowed, username } = context.state.user;
-  const isAdmin = config.adminsUsernames.includes(username ?? '');
+  const isAdmin = appConfig.adminsUsernames.includes(username ?? '');
 
   const hasAccess = isAllowed || isAdmin;
 
