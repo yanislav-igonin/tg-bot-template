@@ -1,4 +1,3 @@
-import { appConfig } from 'config/app.config';
 import { connection, models } from './database';
 import { logger } from '@/logger';
 import {
@@ -8,6 +7,7 @@ import {
   userMiddleware,
 } from '@/middlewares';
 import { replies } from '@/replies';
+import { appConfig } from 'config/app.config';
 import { type BotContext } from 'context';
 import { Bot } from 'grammy';
 
@@ -31,11 +31,19 @@ bot.on('message:text', async (context) => {
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
+  await models.Message.create({
+    chatId: chat.id,
+    text,
+    tgId: context.message.message_id.toString(),
+    userId: user.id,
+  });
+
   try {
     const message = `Echo: ${text}`;
     const botReply = await context.reply(message, {
       reply_to_message_id: replyToMessageId,
     });
+
     await models.Message.create({
       chatId: chat.id,
       text: message,

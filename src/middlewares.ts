@@ -1,7 +1,8 @@
 import { appConfig } from './config/app.config';
-import { chatModel, userModel } from './database';
+import { models } from './database';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
+import { type ChatType } from 'database/models';
 import { type NextFunction } from 'grammy';
 // eslint-disable-next-line import/extensions
 import { type Chat as TelegramChat } from 'grammy/out/types.node';
@@ -27,7 +28,7 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await chatModel.findUnique({
+  const chat = await models.Chat.findOne({
     where: { tgId: chatId.toString() },
   });
   if (chat) {
@@ -42,9 +43,9 @@ export const chatMiddleware = async (
   const toCreate = {
     name,
     tgId: chatId.toString(),
-    type: context.chat?.type,
+    type: context.chat?.type as ChatType,
   };
-  const newChat = await chatModel.create({ data: toCreate });
+  const newChat = await models.Chat.create(toCreate);
 
   // eslint-disable-next-line require-atomic-updates
   context.state.chat = newChat;
@@ -66,7 +67,7 @@ export const userMiddleware = async (
 
   const { id: userId } = user;
 
-  const databaseUser = await userModel.findUnique({
+  const databaseUser = await models.User.findOne({
     where: { tgId: userId.toString() },
   });
   if (databaseUser) {
@@ -92,7 +93,7 @@ export const userMiddleware = async (
     username: valueOrNull(username),
   };
 
-  const newUser = await userModel.create({ data: toCreate });
+  const newUser = await models.User.create(toCreate);
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
 

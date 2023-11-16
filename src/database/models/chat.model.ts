@@ -1,7 +1,7 @@
 import { Base } from './base.model';
 import { Column, Table } from 'sequelize-typescript';
 
-enum ChatType {
+export enum ChatType {
   Channel = 'channel',
   Group = 'group',
   Private = 'private',

@@ -14,7 +14,7 @@ type UserAttributes = {
 };
 type UserCreationAttributes = Omit<
   UserAttributes,
-  'createdAt' | 'id' | 'updatedAt'
+  'createdAt' | 'id' | 'isAllowed' | 'updatedAt'
 >;
 
 @Table({ tableName: 'users' })
@@ -34,6 +34,6 @@ export class User extends Base<UserAttributes, UserCreationAttributes> {
   @Column({ type: 'varchar(2)' })
   languageCode!: string | null;
 
-  @Column({ allowNull: false })
-  isAllowed: boolean = false;
+  @Column({ allowNull: false, defaultValue: false })
+  isAllowed!: boolean;
 }
