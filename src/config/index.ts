@@ -1,2 +1,2 @@
 export * from './app.config';
-export { databaseConfig } from './database.config';
+export { default as databaseConfig } from './database.config';

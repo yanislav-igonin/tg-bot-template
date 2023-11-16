@@ -14,10 +14,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
 require('dotenv').config();
 
-/**
- * @type {import('sequelize').Options & { url: string }}
- */
-module.exports.databaseConfig = {
+module.exports = {
   dialect: 'postgres',
   logging: false,
   url:
