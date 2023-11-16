@@ -1,5 +1,5 @@
 {
-  "id": "4c73b8a7-94c2-4df8-9acd-4de21a315966",
+  "id": "ee78b24e-27fa-4296-9079-20d0469cd054",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -19,14 +19,14 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "'2023-11-16 09:43:13.477'"
+          "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "'2023-11-16 09:43:13.477'"
+          "default": "now()"
         },
         "name": {
           "name": "name",
@@ -75,14 +75,14 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "'2023-11-16 09:43:13.477'"
+          "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "'2023-11-16 09:43:13.477'"
+          "default": "now()"
         },
         "chat_id": {
           "name": "chat_id",
@@ -156,14 +156,14 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "'2023-11-16 09:43:13.477'"
+          "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "default": "'2023-11-16 09:43:13.477'"
+          "default": "now()"
         },
         "first_name": {
           "name": "first_name",
@@ -190,8 +190,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "name": {
-          "name": "name",
+        "username": {
+          "name": "username",
           "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false

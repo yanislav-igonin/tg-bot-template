@@ -11,6 +11,6 @@ export default {
     user: process.env.DATABASE_USER ?? 'postgres',
   },
   driver: 'pg',
-  out: './src/database/migrations',
-  schema: './src/database/schemas/index.ts',
+  out: 'src/database/migrations',
+  schema: 'src/database/schemas/index.ts',
 } satisfies Config;

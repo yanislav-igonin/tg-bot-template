@@ -2,7 +2,7 @@ import { appConfig } from './config';
 import { database, operators } from './database';
 import { valueOrNull } from '@/values';
 import { type BotContext } from 'context';
-import { chats } from 'database/schemas';
+import { chats, users } from 'database/schemas';
 import { type NextFunction } from 'grammy';
 // eslint-disable-next-line import/extensions
 import { type Chat as TelegramChat } from 'grammy/out/types.node';
@@ -28,11 +28,9 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await database
-    .select()
-    .from(chats)
-    .where(operators.eq(chats.tgId, chatId.toString()))
-    .then((rows) => rows[0]);
+  const chat = await database.query.chats.findFirst({
+    where: operators.eq(chats.tgId, chatId.toString()),
+  });
   if (chat) {
     // eslint-disable-next-line require-atomic-updates
     context.state.chat = chat;
@@ -47,7 +45,10 @@ export const chatMiddleware = async (
     tgId: chatId.toString(),
     type: context.chat?.type,
   };
-  const newChat = await chatModel.create({ data: toCreate });
+  await database.insert(chats).values(toCreate);
+  const newChat = await database.query.chats.findFirst({
+    where: operators.eq(chats.tgId, chatId.toString()),
+  });
 
   // eslint-disable-next-line require-atomic-updates
   context.state.chat = newChat;
@@ -69,8 +70,8 @@ export const userMiddleware = async (
 
   const { id: userId } = user;
 
-  const databaseUser = await userModel.findUnique({
-    where: { tgId: userId.toString() },
+  const databaseUser = await database.query.users.findFirst({
+    where: operators.eq(chats.tgId, userId.toString()),
   });
   if (databaseUser) {
     // eslint-disable-next-line require-atomic-updates
@@ -95,7 +96,10 @@ export const userMiddleware = async (
     username: valueOrNull(username),
   };
 
-  const newUser = await userModel.create({ data: toCreate });
+  await database.insert(users).values(toCreate);
+  const newUser = await database.query.users.findFirst({
+    where: operators.eq(users.tgId, userId.toString()),
+  });
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
 

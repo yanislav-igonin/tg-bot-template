@@ -9,6 +9,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc && tsc-alias",
     "start": "node dist/index.js",
+    "db:migration:up": "ts-node -r dotenv/config -r tsconfig-paths/register src/database/migrate.ts",
     "db:migration:generate": "npx drizzle-kit generate:pg --config src/config/database.config.ts"
   },
   "repository": {

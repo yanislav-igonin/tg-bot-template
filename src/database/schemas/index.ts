@@ -12,8 +12,8 @@ import {
 
 const baseTable = {
   id: serial('id').primaryKey(),
-  createdAt: timestamp('created_at').notNull().default(new Date()),
-  updatedAt: timestamp('updated_at').notNull().default(new Date()),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
 };
 
 export const users = pgTable('users', {
@@ -22,7 +22,7 @@ export const users = pgTable('users', {
   isAllowed: boolean('is_allowed').notNull().default(false),
   languageCode: varchar('language_code', { length: 2 }),
   lastName: varchar('last_name', { length: 256 }),
-  name: varchar('name', { length: 256 }),
+  username: varchar('username', { length: 256 }),
   tgId: varchar('tg_id', { length: 256 }).notNull().unique(),
 });
 

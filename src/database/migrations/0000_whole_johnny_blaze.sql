@@ -6,8 +6,8 @@ END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "chats" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"created_at" timestamp DEFAULT '2023-11-16 09:43:13.477' NOT NULL,
-	"updated_at" timestamp DEFAULT '2023-11-16 09:43:13.477' NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"name" varchar(256) NOT NULL,
 	"tg_id" varchar(256) NOT NULL,
 	"type" "type" NOT NULL,
@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS "chats" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "messages" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"created_at" timestamp DEFAULT '2023-11-16 09:43:13.477' NOT NULL,
-	"updated_at" timestamp DEFAULT '2023-11-16 09:43:13.477' NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"chat_id" integer NOT NULL,
 	"text" text,
 	"tg_id" varchar(256) NOT NULL,
@@ -26,13 +26,13 @@ CREATE TABLE IF NOT EXISTS "messages" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"created_at" timestamp DEFAULT '2023-11-16 09:43:13.477' NOT NULL,
-	"updated_at" timestamp DEFAULT '2023-11-16 09:43:13.477' NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
 	"first_name" varchar(256),
 	"is_allowed" boolean DEFAULT false NOT NULL,
 	"language_code" varchar(2),
 	"last_name" varchar(256),
-	"name" varchar(256),
+	"username" varchar(256),
 	"tg_id" varchar(256) NOT NULL,
 	CONSTRAINT "users_tg_id_unique" UNIQUE("tg_id")
 );

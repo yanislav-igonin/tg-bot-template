@@ -1,5 +1,5 @@
-import { config } from '@/config';
-import { database, messageModel } from '@/database';
+import { appConfig } from '@/config';
+import { database } from '@/database';
 import { logger } from '@/logger';
 import {
   allowedUserMiddleware,
@@ -9,9 +9,10 @@ import {
 } from '@/middlewares';
 import { replies } from '@/replies';
 import { type BotContext } from 'context';
+import { messages } from 'database/schemas';
 import { Bot } from 'grammy';
 
-const bot = new Bot<BotContext>(config.botToken);
+const bot = new Bot<BotContext>(appConfig.botToken);
 bot.catch(logger.error);
 bot.use(stateMiddleware);
 bot.use(userMiddleware);
@@ -31,13 +32,11 @@ bot.on('message:text', async (context) => {
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
-  await messageModel.create({
-    data: {
-      chatId: chat.id,
-      text,
-      tgId: replyToMessageId.toString(),
-      userId: user.id,
-    },
+  await database.insert(messages).values({
+    chatId: chat.id,
+    text,
+    tgId: replyToMessageId.toString(),
+    userId: user.id,
   });
 
   try {
@@ -45,13 +44,11 @@ bot.on('message:text', async (context) => {
     const botReply = await context.reply(message, {
       reply_to_message_id: replyToMessageId,
     });
-    await messageModel.create({
-      data: {
-        chatId: chat.id,
-        text: message,
-        tgId: botReply.message_id.toString(),
-        userId: 1,
-      },
+    await database.insert(messages).values({
+      chatId: chat.id,
+      text: message,
+      tgId: botReply.message_id.toString(),
+      userId: 1,
     });
   } catch (error) {
     await context.reply(replies.error);
@@ -60,12 +57,12 @@ bot.on('message:text', async (context) => {
 });
 
 const start = async () => {
-  await database.$connect();
+  // await database.select('1')('SELECT 1');
   logger.info('database connected');
   // eslint-disable-next-line promise/prefer-await-to-then
   bot.start().catch(async (error) => {
     logger.error(error);
-    await database.$disconnect();
+    // await database.();
   });
 };
 
