@@ -1,4 +1,8 @@
-import * as path from 'path';
+/* eslint-disable no-negated-condition */
+/* eslint-disable node/no-process-exit */
+/* eslint-disable no-console */
+/* eslint-disable import/no-extraneous-dependencies */
+import * as path from 'node:path';
 import prompts from 'prompts';
 import { MigrationCreateCommand } from 'typeorm/commands/MigrationCreateCommand';
 import { MigrationGenerateCommand } from 'typeorm/commands/MigrationGenerateCommand';
@@ -8,10 +12,10 @@ import { MigrationShowCommand } from 'typeorm/commands/MigrationShowCommand';
 import type * as yargs from 'yargs';
 
 enum OPERATION {
-  GENERATE = 'generate',
   CREATE = 'create',
-  RUN = 'run',
+  GENERATE = 'generate',
   REVERT = 'revert',
+  RUN = 'run',
   SHOW = 'show',
 }
 
@@ -24,17 +28,14 @@ const operationsClasses: Record<string, yargs.CommandModule> = {
 };
 
 type PromptResult = {
-  operation: OPERATION;
   migrationName?: string;
+  operation: OPERATION;
 };
 
 const runPrompt = async (): Promise<PromptResult> => {
-  const res = await prompts(
+  const response = await prompts(
     [
       {
-        type: 'select',
-        name: 'operation',
-        message: 'Select operation',
         choices: [
           { title: 'Generate migration', value: OPERATION.GENERATE },
           { title: 'Create empty migration', value: OPERATION.CREATE },
@@ -49,12 +50,17 @@ const runPrompt = async (): Promise<PromptResult> => {
           },
         ],
         initial: 0,
+        message: 'Select operation',
+        name: 'operation',
+        type: 'select',
       },
       {
-        type: (prev) =>
-          [OPERATION.GENERATE, OPERATION.CREATE].includes(prev) ? 'text' : null,
-        name: 'migrationName',
         message: 'Migration name',
+        name: 'migrationName',
+        type: (previous) =>
+          [OPERATION.GENERATE, OPERATION.CREATE].includes(previous)
+            ? 'text'
+            : null,
         validate: (input: string) => input.length > 1,
       },
     ],
@@ -66,18 +72,14 @@ const runPrompt = async (): Promise<PromptResult> => {
     },
   );
 
-  return res;
+  return response;
 };
 
 const main = async () => {
   const { operation, migrationName } = await runPrompt();
 
   const migrationsPath = path.resolve(process.cwd(), 'src/database/migrations');
-  const ormConfigPath = path.resolve(
-    migrationsPath,
-    '..',
-    'index.ts',
-  );
+  const ormConfigPath = path.resolve(migrationsPath, '..', 'index.ts');
 
   const command = operationsClasses[operation];
   const pathForCommand =
@@ -85,15 +87,15 @@ const main = async () => {
       ? path.resolve(migrationsPath, migrationName)
       : migrationsPath;
 
-  await command!.handler({
-    _: [],
+  await command.handler({
     $0: 'dumb',
+    _: [],
     dataSource: ormConfigPath,
     path: pathForCommand,
   });
 };
 
-main().catch((e) => {
-  console.error(e);
+main().catch((error) => {
+  console.error(error);
   process.exit(1);
 });
