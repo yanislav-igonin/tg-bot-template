@@ -45,7 +45,6 @@ export const chatMiddleware = async (
   const toCreate = {
     name,
     tgId: chatId.toString(),
-    tgId: chatId.toString(),
     type: context.chat?.type,
   };
   const newChat = await ChatModel.create(toCreate).save();
