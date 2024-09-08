@@ -1,7 +1,6 @@
-import { config } from './config';
-import { chatModel, userModel } from './database';
-import { valueOrNull } from '@/values';
+import { appConfig } from './config/app.config';
 import { type BotContext } from 'context';
+import { ChatModel, UserModel } from 'database/models';
 import { type NextFunction } from 'grammy';
 // eslint-disable-next-line import/extensions
 import { type Chat as TelegramChat } from 'grammy/out/types.node';
@@ -27,25 +26,28 @@ export const chatMiddleware = async (
     return;
   }
 
-  const chat = await chatModel.findUnique({
-    where: { tgId: chatId.toString() },
-  });
+  const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
+
+  const chat = await ChatModel.findOneBy({ tgId: chatId.toString() });
   if (chat) {
+    // Update chat info
+    chat.name = name;
+    await chat.save();
+
     // eslint-disable-next-line require-atomic-updates
     context.state.chat = chat;
+
     // eslint-disable-next-line node/callback-return
     await next();
     return;
   }
 
-  const name = (context.chat as TelegramChat.GroupChat).title ?? 'user';
   const toCreate = {
     name,
     tgId: chatId.toString(),
-    type: context.chat?.type,
+    type: context.chat.type,
   };
-  const newChat = await chatModel.create({ data: toCreate });
-
+  const newChat = await ChatModel.create(toCreate).save();
   // eslint-disable-next-line require-atomic-updates
   context.state.chat = newChat;
 
@@ -64,12 +66,23 @@ export const userMiddleware = async (
     return;
   }
 
-  const { id: userId } = user;
+  const {
+    id: userId,
+    first_name: firstName,
+    language_code: language,
+    last_name: lastName,
+    username,
+  } = user;
 
-  const databaseUser = await userModel.findUnique({
-    where: { tgId: userId.toString() },
-  });
+  const databaseUser = await UserModel.findOneBy({ tgId: userId.toString() });
   if (databaseUser) {
+    // Update user info
+    databaseUser.firstName = firstName;
+    databaseUser.language = language;
+    databaseUser.lastName = lastName;
+    databaseUser.username = username;
+    await databaseUser.save();
+
     // eslint-disable-next-line require-atomic-updates
     context.state.user = databaseUser;
     // eslint-disable-next-line node/callback-return
@@ -77,22 +90,13 @@ export const userMiddleware = async (
     return;
   }
 
-  const {
-    first_name: firstName,
-    language_code: language,
-    last_name: lastName,
-    username,
-  } = user;
-
-  const toCreate = {
-    firstName: valueOrNull(firstName),
-    language: valueOrNull(language),
-    lastName: valueOrNull(lastName),
+  const newUser = await UserModel.create({
+    firstName,
+    language,
+    lastName,
     tgId: userId.toString(),
-    username: valueOrNull(username),
-  };
-
-  const newUser = await userModel.create({ data: toCreate });
+    username,
+  }).save();
   // eslint-disable-next-line require-atomic-updates
   context.state.user = newUser;
 
@@ -105,8 +109,9 @@ export const allowedUserMiddleware = async (
   next: NextFunction,
 ) => {
   const { isAllowed, username } = context.state.user;
-  const isAdmin = config.adminsUsernames.includes(username ?? '');
+  const isAdmin = appConfig.adminsUsernames.includes(username ?? '');
 
+  // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const hasAccess = isAllowed || isAdmin;
 
   if (!hasAccess) {

@@ -9,8 +9,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc && tsc-alias",
     "start": "node dist/index.js",
-    "db:migrate:create": "prisma migrate dev",
-    "db:migrate:up": "prisma migrate deploy"
+    "db": "ts-node -r dotenv/config -r tsconfig-paths/register src/scripts/database.ts"
   },
   "repository": {
     "type": "git",
@@ -23,19 +22,28 @@
   },
   "homepage": "https://github.com/yanislav-igonin/tg-bot-template#readme",
   "devDependencies": {
-    "@typescript-eslint/parser": "^5.55.0",
-    "dotenv": "^16.0.3",
-    "eslint": "^8.36.0",
+    "@types/node": "^20.16.5",
+    "@types/prompts": "^2.4.9",
+    "@types/yargs": "^17.0.33",
+    "@typescript-eslint/parser": "^5.62.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^8.57.0",
     "eslint-config-canonical": "^40.0.9",
-    "nodemon": "^2.0.21",
-    "prisma": "^5.5.2",
-    "ts-node": "^10.9.1",
-    "tsc-alias": "^1.8.3",
-    "tsconfig-paths": "^4.1.2",
-    "typescript": "^5.0.2"
+    "nodemon": "^2.0.22",
+    "prompts": "^2.4.2",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.4",
+    "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@prisma/client": "^5.5.2",
-    "grammy": "^1.15.3"
+    "grammy": "^1.30.0",
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.1.14",
+    "typeorm": "^0.3.20"
+  },
+  "volta": {
+    "node": "20.9.0"
   }
 }
