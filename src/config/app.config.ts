@@ -1,8 +1,8 @@
-import { valueOrDefault } from '@/values';
+import { valueOrDefault } from 'values';
 
 /* eslint-disable node/no-process-env */
 export const appConfig = {
-  adminsUsernames: valueOrDefault(process.env.ADMINS_USERNAMES?.split(','), []),
+  adminUsernames: valueOrDefault(process.env.ADMIN_USERNAMES?.split(','), []),
   botToken: valueOrDefault(process.env.BOT_TOKEN, ''),
   env: valueOrDefault(process.env.ENV, 'development'),
 };

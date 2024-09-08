@@ -109,7 +109,7 @@ export const allowedUserMiddleware = async (
   next: NextFunction,
 ) => {
   const { isAllowed, username } = context.state.user;
-  const isAdmin = appConfig.adminsUsernames.includes(username ?? '');
+  const isAdmin = appConfig.adminUsernames.includes(username ?? '');
 
   // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
   const hasAccess = isAllowed || isAdmin;
