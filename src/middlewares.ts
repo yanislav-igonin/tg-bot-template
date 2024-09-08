@@ -45,7 +45,7 @@ export const chatMiddleware = async (
   const toCreate = {
     name,
     tgId: chatId.toString(),
-    type: context.chat?.type,
+    type: context.chat.type,
   };
   const newChat = await ChatModel.create(toCreate).save();
   // eslint-disable-next-line require-atomic-updates
