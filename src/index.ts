@@ -51,7 +51,7 @@ bot.on('message:text', async (context) => {
       chat: context.state.chat,
       text: botMessage,
       tgId: botReply.message_id.toString(),
-      user: context.state.user,
+      userId: 1,
     }).save();
   } catch (error) {
     await context.reply(replies.error);

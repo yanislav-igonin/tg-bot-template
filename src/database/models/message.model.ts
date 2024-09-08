@@ -23,7 +23,7 @@ export class MessageModel extends BaseModel {
    * User id to which the message belongs
    */
   @Column()
-  userId!: string;
+  userId!: number;
 
   /**
    * User to which the message belongs
@@ -35,7 +35,7 @@ export class MessageModel extends BaseModel {
    * Chat id to which the message belongs
    */
   @Column()
-  chatId!: string;
+  chatId!: number;
 
   /**
    * Chat to which the message belongs
