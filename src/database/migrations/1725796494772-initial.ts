@@ -1,7 +1,7 @@
 import { type MigrationInterface, type QueryRunner } from 'typeorm';
 
-export class Initial1725795424498 implements MigrationInterface {
-  name = 'Initial1725795424498';
+export class Initial1725796494772 implements MigrationInterface {
+  name = 'Initial1725796494772';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
@@ -19,7 +19,6 @@ export class Initial1725795424498 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "messages" ADD CONSTRAINT "FK_36bc604c820bb9adc4c75cd4115" FOREIGN KEY ("chatId") REFERENCES "chats"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
-
     /**
      * Add BOT as user
      */
