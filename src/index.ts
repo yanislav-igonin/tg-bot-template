@@ -30,6 +30,7 @@ bot.command('help', async (context) => {
 });
 
 bot.on('message:text', async (context) => {
+  const { user, chat } = context.state;
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
