@@ -1,4 +1,4 @@
-import { appConfig } from './config/app.config';
+import { appConfig } from 'config/app.config';
 import { type BotContext } from 'context';
 import { ChatModel, UserModel } from 'database/models';
 import { type NextFunction } from 'grammy';
@@ -115,7 +115,6 @@ export const allowedUserMiddleware = async (
   const hasAccess = isAllowed || isAdmin;
 
   if (!hasAccess) {
-    await context.reply('Access denied');
     return;
   }
 

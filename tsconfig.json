@@ -3,29 +3,7 @@
     "target": "es2016",
     "module": "commonjs",
     "baseUrl": "./src",
-    "paths": {
-      "@/config": [
-        "config"
-      ],
-      "@/replies": [
-        "replies"
-      ],
-      "@/values": [
-        "values"
-      ],
-      "@/repositories": [
-        "repositories"
-      ],
-      "@/logger": [
-        "logger"
-      ],
-      "@/database": [
-        "database"
-      ],
-      "@/middlewares": [
-        "middlewares"
-      ]
-    },
+    "paths": {},
     "outDir": "dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,

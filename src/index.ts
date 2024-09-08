@@ -1,18 +1,18 @@
 // eslint-disable-next-line import/no-unassigned-import
 import 'reflect-metadata';
-import database from './database';
-import { logger } from '@/logger';
+import { appConfig } from 'config/app.config';
+import { type BotContext } from 'context';
+import database from 'database';
+import { MessageModel } from 'database/models';
+import { Bot } from 'grammy';
+import { logger } from 'logger';
 import {
   allowedUserMiddleware,
   chatMiddleware,
   stateMiddleware,
   userMiddleware,
-} from '@/middlewares';
-import { replies } from '@/replies';
-import { appConfig } from 'config/app.config';
-import { type BotContext } from 'context';
-import { MessageModel } from 'database/models';
-import { Bot } from 'grammy';
+} from 'middlewares';
+import { replies } from 'replies';
 
 const bot = new Bot<BotContext>(appConfig.botToken);
 bot.catch(logger.error);
@@ -30,7 +30,7 @@ bot.command('help', async (context) => {
 });
 
 bot.on('message:text', async (context) => {
-  const { user, chat } = context.state;
+  // const { user, chat } = context.state;
   const text = context.message.text;
   const { message_id: replyToMessageId } = context.message;
 
